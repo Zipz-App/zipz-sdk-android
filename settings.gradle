@@ -1,0 +1,2 @@
+include ':app', ':zlibrary'
+rootProject.name='ZApp'
