@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity  extends AppCompatActivity {
 
-    EditText etEmail, etPassword;
-    public Button btnLogin;
+    public static EditText etEmail, etPassword;
+    public static Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class LoginActivity  extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
-        Button btnLogin = findViewById(R.id.btn_login);
+        btnLogin = findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,5 +37,8 @@ public class LoginActivity  extends AppCompatActivity {
 
     public static void test(Context c, String message) {
         Toast.makeText(c, message, Toast.LENGTH_SHORT).show();
+    }
+    public static void login(Context context){
+        btnLogin.performClick();
     }
 }
