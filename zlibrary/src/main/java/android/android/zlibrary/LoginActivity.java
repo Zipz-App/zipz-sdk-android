@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity  extends AppCompatActivity {
 
-    public static EditText etEmail, etPassword;
-    public static Button btnLogin;
+    public EditText etEmail, etPassword;
+    public Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,10 @@ public class LoginActivity  extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (etEmail.getText().toString().equals("bruno@zipzapp.com") && etPassword.getText().toString().equals("zipzapp")) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainZActivity.class);
                     startActivity(intent);
+                }else{
+                    Toast.makeText(LoginActivity.this, "Try again!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -37,8 +39,5 @@ public class LoginActivity  extends AppCompatActivity {
 
     public static void test(Context c, String message) {
         Toast.makeText(c, message, Toast.LENGTH_SHORT).show();
-    }
-    public static void login(Context context){
-        btnLogin.performClick();
     }
 }
