@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">ZLibrary</string>
+
+
+    <string name="RedeWorkingHoursOpened">Aberto</string>
+    <string name="RedeWorkingHoursClosed">Fechado</string>
+    <string name="RedeMessageThereAreNoFavoriteVenues">Não existem estabelecimentos selecionados. Para adicionar as suas lojas favoritas aqui, clique na estrela localizada no canto superior direito dentro da tela do estabelecimento.</string>
+    <string name="RedeMessageThereAreNoVenues">Não existem estabelecimentos disponíveis no momento.</string>
+    <string name="loading">Carregando…</string>
+    <string name="RedeSearchHint"><i>Pesquise aqui o nome da loja</i></string>
+
 </resources>

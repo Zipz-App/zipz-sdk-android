@@ -1,5 +1,6 @@
-package android.android.zlibrary;
+package android.android.zlibrary.activities;
 
+import android.android.zlibrary.R;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

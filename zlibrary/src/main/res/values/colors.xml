@@ -3,4 +3,43 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="colorAppPrimary">#d5005d</color>
+    <color name="colorAppPrimaryDark">#a9004a</color>
+    <color name="colorAppAccent">#d5005d</color>
+    <color name="colorAppSecondary">#c70057</color>
+    <color name="colorAppSecondaryDark">#ba0052</color>
+    <color name="colorGoogleText">#757575</color>
+    <color name="colorPlaceOpened">#008805</color>
+
+    <color name="colorFilterTextSelected">#ffffff</color>
+    <color name="colorFilterTextUnselected">#6e0532</color>
+
+    <color name="colorBackgroundWindow">#f3f7f8</color>
+    <color name="colorBackgroundItem">#ffffff</color>
+    <color name="colorBorderItem">#e5e5e5</color>
+
+    <color name="colorTextPrimary">#4d4d4d</color>
+    <color name="colorTextPrimaryDark">#000000</color>
+    <color name="colorTextSecondary">#93989c</color>
+    <color name="colorTextSecondaryLight">#ffffff</color>
+    <color name="colorTextBackgroundEmailInfo">#393939</color>
+    <color name="colorInactive">#4d4d4d</color>
+    <color name="colorTimeBarBackground">#d8d8df</color>
+    <color name="colorPressed">#93989c</color>
+    <color name="colorPressedLight">#dce2e9</color>
+
+    <color name="colorMuteIconBorder">#c1c7cc</color>
+
+    <color name="colorTransparentBlack">#86000000</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorPreferencesMessageBg">#1A1A1A</color>
+    <color name="colorPreferencesMessageTxt">#FEFEFE</color>
+
+    <color name="colorInputError">#ff0011</color>
+    <color name="colorInputGreen">#158000</color>
+    <color name="colorInputFields">#303030</color>
+    <color name="colorInputFieldsDark">#000000</color>
+    <color name="white">#fff</color>
+
 </resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginLeft="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:layout_marginRight="@dimen/spaceMedium">
+    <include layout="@layout/item_venue_list"/>
+</LinearLayout>

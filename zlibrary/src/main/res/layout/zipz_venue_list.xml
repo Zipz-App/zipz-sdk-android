@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_image" />
+    <LinearLayout
+        android:id="@+id/relativeSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <android.android.zlibrary.help.SearchText
+                android:id="@+id/searchEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spaceMedium"
+                android:layout_marginLeft="@dimen/spaceMedium"
+                android:layout_weight="1"
+                android:background="@drawable/search_background"
+                android:drawableStart="@drawable/ic_search"
+                android:drawableLeft="@drawable/ic_search"
+                android:hint="@string/RedeSearchHint"
+                android:maxLines="1"
+                android:padding="@dimen/spaceSmall"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColorHint="@color/colorTextSecondary" />
+
+            <ImageButton
+                android:id="@+id/imgFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spaceMedium"
+                android:layout_marginEnd="@dimen/spaceMedium"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:src="@drawable/button_filter_background" />
+
+            <ImageButton
+                android:id="@+id/imgMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spaceMedium"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:src="@drawable/ic_map" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearPreferencesMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeSearch"
+        android:orientation="vertical">
+
+        <!--        <RelativeLayout-->
+        <!--            android:id="@+id/containerPreferencesMessage"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:background="@color/colorPreferencesMessageBg">-->
+
+        <!--            <ImageView-->
+        <!--                android:id="@+id/imgX"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_alignParentRight="true"-->
+        <!--                android:src="@drawable/ic_x" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/txtPreferencesMessage"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:gravity="center"-->
+        <!--                android:paddingStart="32dp"-->
+        <!--                android:paddingLeft="32dp"-->
+        <!--                android:paddingTop="@dimen/spaceMedium"-->
+        <!--                android:paddingEnd="32dp"-->
+        <!--                android:paddingRight="32dp"-->
+        <!--                android:paddingBottom="@dimen/spaceMedium"-->
+        <!--                android:textAppearance="@style/TextAppearanceSmall"-->
+        <!--                android:textColor="@color/colorPreferencesMessageTxt"-->
+        <!--                android:visibility="gone" />-->
+        <!--        </RelativeLayout>-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBackgroundWindow"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="8dp"
+            android:scrollbars="vertical" />
+
+
+        <!--        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:id="@+id/swipeToRefresh">-->
+        <!--            <androidx.recyclerview.widget.RecyclerView-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:focusable="true"-->
+        <!--                android:focusableInTouchMode="true"-->
+        <!--                android:clickable="true"-->
+        <!--                android:padding="8dp"-->
+        <!--                android:background="@color/colorBackgroundWindow"-->
+        <!--                android:id="@+id/recyclerView"-->
+        <!--                android:scrollbars="vertical"/>-->
+        <!--        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+    </LinearLayout>
+    <!--    <FrameLayout-->
+    <!--        android:id="@+id/mapContainer"-->
+    <!--        android:layout_below="@+id/relativeSearch"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"/>-->
+</RelativeLayout>

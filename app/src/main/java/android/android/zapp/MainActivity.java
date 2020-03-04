@@ -2,7 +2,8 @@ package android.android.zapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.android.zlibrary.LoginActivity;
+import android.android.zlibrary.activities.CouponActivity;
+import android.android.zlibrary.activities.LoginActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+//        Button buttonCoupons = findViewById(R.id.buttonCoupons);
+//        buttonCoupons.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, CouponActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
     }
 }

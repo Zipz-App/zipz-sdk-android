@@ -13,6 +13,7 @@
 
         <EditText
             android:id="@+id/et_email"
+            android:text="bruno@zipzapp.com"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -33,6 +34,7 @@
             android:background="@color/colorPrimary" />
 
         <EditText
+            android:text="zipzapp"
             android:id="@+id/et_password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

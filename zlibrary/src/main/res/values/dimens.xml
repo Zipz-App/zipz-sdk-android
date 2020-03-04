@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="TextAppearanceExtraExtraSmall">10dp</dimen>
+    <dimen name="TextAppearanceExtraSmall">12dp</dimen>
+    <dimen name="TextAppearanceSmall">14dp</dimen>
+    <dimen name="TextAppearanceMediumSmall">16dp</dimen>
+    <dimen name="TextAppearanceMedium">18dp</dimen>
+    <dimen name="TextAppearanceLarge">22dp</dimen>
+    <dimen name="TextAppearanceExtraLarge">26dp</dimen>
+
+    <dimen name="spaceExtraSmall">2dp</dimen>
+    <dimen name="spaceSmall">4dp</dimen>
+    <dimen name="spaceMedium">8dp</dimen>
+    <dimen name="spaceLarge">12dp</dimen>
+    <dimen name="spaceExtraLarge">16dp</dimen>
+    <dimen name="tabFilterHeight">38dp</dimen>
+</resources>
