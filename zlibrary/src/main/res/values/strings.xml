@@ -8,5 +8,14 @@
     <string name="RedeMessageThereAreNoVenues">Não existem estabelecimentos disponíveis no momento.</string>
     <string name="loading">Carregando…</string>
     <string name="RedeSearchHint"><i>Pesquise aqui o nome da loja</i></string>
-
+    <string name="CameraScanQRCodeLabel">Escaneie abaixo o cartão QR Code do seu atendente.</string>
+    <string name="RedeemLabelDescription">Descrição:</string>
+    <string name="RedeemButtonRedeemed">Restagar</string>
+    <string name="RedeemButtonRedeem">Resgate Aqui</string>
+    <string name="ShareButtonText">Compartilhar</string>
+    <string name="RedeemButtonContinueBuying">Continuar comprando</string>
+    <string name="RedeemLabelFooterText">Caso não queira resgatar esta oferta agora, ela estará disponível no Menu > Reservas até que o prazo de resgate definido pelo estabelecimento se expire.</string>
+    <string name="RedeemLabelNotRedeemed">Para resgatar essa oferta, vá até a loja escolhida, solicite o cartão QR Code que está com o atendente do estabelecimento e clique em RESGATAR.</string>
+    <string name="OffersLabelDiscount">Off</string>
+    <string name="OffersLabelGratis">Grátis</string>
 </resources>

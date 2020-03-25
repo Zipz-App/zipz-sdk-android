@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
@@ -29,14 +28,6 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         init();
-//        Button buttonCoupons = findViewById(R.id.buttonCoupons);
-//        buttonCoupons.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainZActivity.this, CouponActivity.class);
-//                startActivity(intent);
-//            }
-//        });
     }
 
     private void init() {
@@ -50,12 +41,16 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int itemId = menuItem.getItemId();
         if (itemId == R.id.nav_coupons) {
-            if(isValidDestination(R.id.couponsScreen)){
+            if (isValidDestination(R.id.couponsScreen)) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.couponsScreen);
             }
         } else if (itemId == R.id.nav_profile) {
-            if(isValidDestination(R.id.profileScreen)){
+            if (isValidDestination(R.id.profileScreen)) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.profileScreen);
+            }
+        } else if (itemId == R.id.nav_camera) {
+            if (isValidDestination(R.id.cameraScreen)) {
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.cameraScreen);
             }
         }
         menuItem.setChecked(true);

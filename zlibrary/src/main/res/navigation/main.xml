@@ -6,12 +6,19 @@
     app:startDestination="@+id/profileScreen"
     tools:ignore="UnusedNavigation">
 
-    <fragment android:id="@+id/profileScreen"
+    <fragment
+        android:id="@+id/profileScreen"
         android:name="android.android.zlibrary.fragments.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile"/>
-    <fragment android:id="@+id/couponsScreen"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/couponsScreen"
         android:name="android.android.zlibrary.fragments.CouponsFragment"
         android:label="Coupons"
-        tools:layout="@layout/fragment_coupons"/>
+        tools:layout="@layout/fragment_coupons" />
+    <fragment
+        android:id="@+id/cameraScreen"
+        android:name="android.android.zlibrary.fragments.RedeemFragment"
+        android:label="Coupons"
+        tools:layout="@layout/fragment_camera" />
 </navigation>

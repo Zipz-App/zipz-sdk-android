@@ -17,19 +17,24 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="SettingsContainerStyleBase">
         <item name="android:layout_marginTop">2dp</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+
     <style name="LayoutClicableStyle" parent="SettingsContainerStyleBase">
         <item name="android:background">@drawable/button_settings_bg_selector</item>
     </style>
+
     <style name="TextAppearanceExtraExtraSmall" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">@dimen/TextAppearanceExtraExtraSmall</item>
     </style>
+
     <style name="TextAppearanceExtraSmall" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">@dimen/TextAppearanceExtraSmall</item>
     </style>
+
     <style name="TextAppearanceSmall" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">@dimen/TextAppearanceSmall</item>
     </style>
@@ -38,4 +43,17 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
+
+    <style name="TextAppearanceMediumSmall" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">@dimen/TextAppearanceMediumSmall</item>
+    </style>
+
+    <style name="TextAppearanceMedium" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">@dimen/TextAppearanceMedium</item>
+    </style>
+
+    <style name="TextAppearanceExtraLarge" parent="@android:style/TextAppearance.Large">
+        <item name="android:textSize">@dimen/TextAppearanceExtraLarge</item>
+    </style>
+
 </resources>

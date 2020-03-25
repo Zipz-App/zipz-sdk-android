@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 
 public class Helper {
     private static int imgDimen = 0;
+
     public static int getImgDimen(Context context) {
         if (imgDimen == 0) {
             View v = LayoutInflater.from(context).inflate(R.layout.item_venue_list, null);

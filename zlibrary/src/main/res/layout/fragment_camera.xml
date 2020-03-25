@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true">
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/barcode_scanner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/txtCameraLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spaceMedium"
+        android:background="@color/colorBackgroundItem"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/spaceLarge"
+        android:text="@string/CameraScanQRCodeLabel"
+        android:textAppearance="@style/TextAppearanceMediumSmall"
+        android:textColor="@color/colorAppPrimary"
+        android:textStyle="bold" />
+</RelativeLayout>
