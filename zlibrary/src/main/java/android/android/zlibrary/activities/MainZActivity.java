@@ -1,25 +1,46 @@
 package android.android.zlibrary.activities;
 
 import android.android.zlibrary.R;
+import android.android.zlibrary.help.LogManager;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+
+import java.io.IOException;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
 public class MainZActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    public static String advId;
+    public static double latitudeValue, longitudeValue;
+    private FusedLocationProviderClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +49,25 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         init();
+        requestPermission();
+        client = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ActivityCompat.checkSelfPermission(MainZActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        client.getLastLocation().addOnSuccessListener(MainZActivity.this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    latitudeValue = location.getLatitude();
+                    longitudeValue = location.getLongitude();
+                }
+            }
+        });
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
     }
 
     private void init() {
@@ -66,4 +106,56 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
     private boolean isValidDestination(int destination) {
         return destination != Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId();
     }
+
+    private class GetAdvertiseId extends AsyncTask<Void, Void, AdvertisingIdClient.Info> {
+
+        @Override
+        protected AdvertisingIdClient.Info doInBackground(Void... voids) {
+            AdvertisingIdClient.Info adInfo = null;
+            try {
+                adInfo = AdvertisingIdClient.getAdvertisingIdInfo(MainZActivity.this);
+            } catch (IOException e) {
+                LogManager.logError(e);
+            } catch (IllegalStateException e) {
+                LogManager.logError(e);
+            } catch (GooglePlayServicesNotAvailableException e) {
+                LogManager.logError(e);
+                // Google Play services is not available entirely.
+            } catch (GooglePlayServicesRepairableException e) {
+                LogManager.logError(e);
+            } catch (Exception e) {
+                LogManager.logError(e);
+            }
+
+            return adInfo;
+        }
+
+        @Override
+        protected void onPostExecute(@Nullable AdvertisingIdClient.Info adInfo) {
+            super.onPostExecute(adInfo);
+            if (adInfo != null) {
+                final String id = adInfo.getId();
+                if (id != null) {
+                    advId = id;
+                }
+            }
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainZActivity.this);
+                if (resultCode == ConnectionResult.SUCCESS) {
+                    GetAdvertiseId getAdvertiseId = new GetAdvertiseId();
+                    getAdvertiseId.execute();
+                }
+            }
+        }, 0);
+    }
+
 }
