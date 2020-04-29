@@ -1,4 +1,4 @@
-package android.android.zlibrary.model;
+package android.android.zlibrary.model.login_response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

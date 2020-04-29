@@ -2,7 +2,7 @@ package android.android.zlibrary.activities;
 
 import android.android.zlibrary.R;
 import android.android.zlibrary.ZipzApplication;
-import android.android.zlibrary.model.LoginResponse;
+import android.android.zlibrary.model.login_response.LoginResponse;
 import android.android.zlibrary.retrofit.RestClient;
 import android.content.Intent;
 import android.os.Bundle;

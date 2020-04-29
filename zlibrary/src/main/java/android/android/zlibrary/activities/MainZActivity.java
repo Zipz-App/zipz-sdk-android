@@ -1,12 +1,17 @@
 package android.android.zlibrary.activities;
 
 import android.android.zlibrary.R;
+import android.android.zlibrary.ZipzApplication;
+import android.android.zlibrary.help.AppStartModel;
 import android.android.zlibrary.help.LogManager;
+import android.android.zlibrary.model.init_response.InitResponse;
+import android.android.zlibrary.retrofit.RestClient;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -28,8 +33,14 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -41,6 +52,7 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
     public static String advId;
     public static double latitudeValue, longitudeValue;
     private FusedLocationProviderClient client;
+    public static String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +62,7 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
         navigationView = findViewById(R.id.nav_view);
         init();
         requestPermission();
+        initRequest();
         client = LocationServices.getFusedLocationProviderClient(this);
 
         if (ActivityCompat.checkSelfPermission(MainZActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -62,6 +75,42 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
                     latitudeValue = location.getLatitude();
                     longitudeValue = location.getLongitude();
                 }
+            }
+        });
+    }
+
+    private void initRequest() {
+        JsonObject jsonObject = new JsonObject();
+        AppStartModel appStartModel = ZipzApplication.getInstance().getAppStartModel();
+        jsonObject.addProperty("device", appStartModel.getDEVICE());
+        jsonObject.addProperty("os", appStartModel.getOS());
+        jsonObject.addProperty("os_version", appStartModel.getOS_VERSION());
+        jsonObject.addProperty("app_version", "1");
+        Call<InitResponse> initCall = RestClient.getInstance().service.init(jsonObject);
+        initCall.enqueue(new Callback<InitResponse>() {
+            @Override
+            public void onResponse(Call<InitResponse> call, Response<InitResponse> response) {
+                Log.d("init code", "response code" + response.code() + "");
+                Log.d("init error", "error body" + response.errorBody() + "");
+                if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
+                    InitResponse initResponse = response.body();
+                    assert initResponse != null;
+                    if (initResponse.getResponse().getAppUser() != null) {
+                        if (initResponse.getResponse().getAppUser().getFirstName() != null) {
+                            String firstName = initResponse.getResponse().getAppUser().getFirstName();
+                            String lastName = initResponse.getResponse().getAppUser().getLastName();
+                            Log.d("username", "onResponse() called with: call = [" + firstName + "], response = [" + lastName + "]");
+                            name = firstName + " " + lastName;
+                        }
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InitResponse> call, Throwable t) {
+                Log.d("init", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
             }
         });
     }

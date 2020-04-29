@@ -28,6 +28,7 @@ public class ProfileFragment extends Fragment {
         final TextView tvAdvId = view.findViewById(R.id.tvAdvId);
         final TextView tvLatitude = view.findViewById(R.id.tvLatitude);
         final TextView tvLongitide = view.findViewById(R.id.tvLongitude);
+        final TextView tvName = view.findViewById(R.id.tvName);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -35,7 +36,18 @@ public class ProfileFragment extends Fragment {
                 tvAdvId.setText(" " + MainZActivity.advId + "");
                 tvLatitude.setText(" " + MainZActivity.latitudeValue + "");
                 tvLongitide.setText(" " + MainZActivity.longitudeValue + "");
+
             }
         }, 200);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (MainZActivity.name != null) {
+                    tvName.setText("Welcome " + MainZActivity.name + "");
+                }
+
+            }
+        }, 600);
     }
 }

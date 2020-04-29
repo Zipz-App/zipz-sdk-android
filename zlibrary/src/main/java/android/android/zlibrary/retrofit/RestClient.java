@@ -17,17 +17,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
-//    private static Retrofit retrofit;
-//
-//    public static Retrofit getRetrofitInstance() {
-//        if (retrofit == null) {
-//            retrofit = new Retrofit.Builder()
-//                    .baseUrl(Constants.BASE_URL)
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    .build();
-//        }
-//        return retrofit;
-//    }
 
     private static RestClient instance = null;
 
@@ -44,18 +33,24 @@ public class RestClient {
                             @Override
                             public Response intercept(Interceptor.Chain chain) throws IOException {
                                 Request original = chain.request();
-                                Request.Builder requestBuilder = new Request.Builder();
+                                Request.Builder requestBuilder = original.newBuilder()
+                                        .header("Accept", "application/json")
+                                        .header("Authorization", "Bearer " + ZipzApplication.
+                                                getInstance().getmSessionManager().getToken())
+                                        .method(original.method(), original.body());
                                 //if logged in add header access_token
-                                if (ZipzApplication.getInstance().getmSessionManager() != null) {
-                                    if (ZipzApplication.getInstance().getmSessionManager().isLoggedIn()) {
-                                        requestBuilder.header("Accept", "application/json")
-                                                .header("Authorization", "Bearer " + ZipzApplication.
-                                                        getInstance().getmSessionManager().getToken())
-                                                .method(original.method(), original.body());
-                                    }
+                                if (ZipzApplication.getInstance().getmSessionManager().isLoggedIn()) {
+                                    requestBuilder.header("Accept", "application/json")
+                                            .header("Authorization", "Bearer " + ZipzApplication.
+                                                    getInstance().getmSessionManager().getToken())
+                                            .method(original.method(), original.body());
+
                                 }
+
+
                                 Request request = requestBuilder.build();
                                 return chain.proceed(request);
+
                             }
 
                         })
@@ -65,19 +60,11 @@ public class RestClient {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd HH:mm:ss")
                 .create();
-        if (ZipzApplication.getInstance().getmSessionManager().isLoggedIn()) {
-            retrofit = new Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .client(okClient)
-                    .baseUrl(Constants.URL_server)
-                    .build();
-        } else {
-            retrofit = new Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .baseUrl(Constants.URL_server)
-                    .build();
-        }
-
+        retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(okClient)
+                .baseUrl(Constants.BASE_URL)
+                .build();
 
         service = retrofit.create(ApiInterface.class);
     }

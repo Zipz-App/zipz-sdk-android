@@ -1,15 +1,18 @@
-package android.android.zlibrary.model;
+package android.android.zlibrary.model.init_response;
+
+import android.android.zlibrary.model.login_response.Status;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class LoginResponse {
+
+public class InitResponse {
     @SerializedName("status")
     @Expose
     private Status status;
     @SerializedName("response")
     @Expose
-    private Response response;
+    private ResponseForInit response;
 
     public Status getStatus() {
         return status;
@@ -19,11 +22,11 @@ public class LoginResponse {
         this.status = status;
     }
 
-    public Response getResponse() {
+    public ResponseForInit getResponse() {
         return response;
     }
 
-    public void setResponse(Response response) {
+    public void setResponse(ResponseForInit response) {
         this.response = response;
     }
 }

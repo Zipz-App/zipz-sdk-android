@@ -12,7 +12,7 @@
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Zipz sdk"
         android:textColor="@color/colorAccent" />
 
 
