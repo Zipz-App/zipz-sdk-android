@@ -141,6 +141,10 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
             if (isValidDestination(R.id.cameraScreen)) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.cameraScreen);
             }
+        } else if (itemId==R.id.nav_home){
+            if (isValidDestination(R.id.homeScreen)) {
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.homeScreen);
+            }
         }
         menuItem.setChecked(true);
         drawerLayout.closeDrawer(GravityCompat.START);
