@@ -1,4 +1,4 @@
-package android.android.zlibrary.model.init_response;
+package android.android.zlibrary.model.registration_response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,6 +7,9 @@ public class AppUser {
     @SerializedName("app_user_id")
     @Expose
     private Integer appUserId;
+    @SerializedName("uuid")
+    @Expose
+    private String uuid;
     @SerializedName("email")
     @Expose
     private String email;
@@ -21,7 +24,13 @@ public class AppUser {
     private String gender;
     @SerializedName("date_of_birth")
     @Expose
-    private Object dateOfBirth;
+    private String dateOfBirth;
+    @SerializedName("cpf")
+    @Expose
+    private String cpf;
+    @SerializedName("phone")
+    @Expose
+    private String phone;
 
     public Integer getAppUserId() {
         return appUserId;
@@ -29,6 +38,14 @@ public class AppUser {
 
     public void setAppUserId(Integer appUserId) {
         this.appUserId = appUserId;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getEmail() {
@@ -63,11 +80,27 @@ public class AppUser {
         this.gender = gender;
     }
 
-    public Object getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Object dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

@@ -29,6 +29,9 @@
         <activity
             android:name=".activities.CouponActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.VenueClusterActivity" />
+        <activity android:name=".activities.VenueActivity" />
+        <activity android:name=".activities.OfferActivity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"

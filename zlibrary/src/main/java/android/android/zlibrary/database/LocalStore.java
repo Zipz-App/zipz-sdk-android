@@ -18,6 +18,7 @@ public class LocalStore {
     private static final String KEY_TOKEN = "token";
 
     private static final String KEY_USER = "user";
+    private static final String KEY_UUID = "uuid" ;
     private static final String IS_LOGIN = "isLoggedIn";
 
     public LocalStore(Context context) {
@@ -92,4 +93,11 @@ public class LocalStore {
         editor.apply();
     }
 
+    public void setUUID(String uuid) {
+        editor.putString(KEY_UUID, uuid);
+        editor.commit();
+    }
+    public String getUUID() {
+        return sharedPreferences.getString(KEY_UUID, "");
+    }
 }

@@ -6,11 +6,13 @@ import android.android.zlibrary.help.AppStartModel;
 import android.android.zlibrary.help.LogManager;
 import android.android.zlibrary.model.init_response.InitResponse;
 import android.android.zlibrary.retrofit.RestClient;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -82,10 +84,21 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
     private void initRequest() {
         JsonObject jsonObject = new JsonObject();
         AppStartModel appStartModel = ZipzApplication.getInstance().getAppStartModel();
+        jsonObject.addProperty("app_id", "7701890734418364");
+        jsonObject.addProperty("app_secret", "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe");
+        jsonObject.addProperty("uuid", ZipzApplication.getInstance().getmSessionManager().getUUID());
         jsonObject.addProperty("device", appStartModel.getDEVICE());
         jsonObject.addProperty("os", appStartModel.getOS());
         jsonObject.addProperty("os_version", appStartModel.getOS_VERSION());
-        jsonObject.addProperty("app_version", "1");
+        jsonObject.addProperty("sdk_version", 1);
+        TelephonyManager telephonyManager = ((TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE));
+        String simOperatorName = telephonyManager.getSimOperatorName();
+        if (simOperatorName != null) {
+            jsonObject.addProperty("carrier", simOperatorName);
+        } else {
+            jsonObject.addProperty("carrier", "");
+        }
+
         Call<InitResponse> initCall = RestClient.getInstance().service.init(jsonObject);
         initCall.enqueue(new Callback<InitResponse>() {
             @Override
@@ -94,16 +107,16 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
                 Log.d("init error", "error body" + response.errorBody() + "");
                 if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
                     InitResponse initResponse = response.body();
-                    assert initResponse != null;
-                    if (initResponse.getResponse().getAppUser() != null) {
-                        if (initResponse.getResponse().getAppUser().getFirstName() != null) {
-                            String firstName = initResponse.getResponse().getAppUser().getFirstName();
-                            String lastName = initResponse.getResponse().getAppUser().getLastName();
-                            Log.d("username", "onResponse() called with: call = [" + firstName + "], response = [" + lastName + "]");
-                            name = firstName + " " + lastName;
-                        }
-
-                    }
+//                    assert initResponse != null;
+//                    if (initResponse.getResponse().getAppUser() != null) {
+//                        if (initResponse.getResponse().getAppUser().getFirstName() != null) {
+//                            String firstName = initResponse.getResponse().getAppUser().getFirstName();
+//                            String lastName = initResponse.getResponse().getAppUser().getLastName();
+//                            Log.d("username", "onResponse() called with: call = [" + firstName + "], response = [" + lastName + "]");
+//                            name = firstName + " " + lastName;
+//                        }
+//
+//                    }
 
                 }
             }
@@ -141,7 +154,7 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
             if (isValidDestination(R.id.cameraScreen)) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.cameraScreen);
             }
-        } else if (itemId==R.id.nav_home){
+        } else if (itemId == R.id.nav_home) {
             if (isValidDestination(R.id.homeScreen)) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.homeScreen);
             }
