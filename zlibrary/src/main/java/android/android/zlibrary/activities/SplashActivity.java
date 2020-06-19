@@ -1,7 +1,7 @@
 package android.android.zlibrary.activities;
 
 import android.android.zlibrary.R;
-import android.android.zlibrary.ZipzApplication;
+import android.android.zlibrary.app.ZipzApplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;

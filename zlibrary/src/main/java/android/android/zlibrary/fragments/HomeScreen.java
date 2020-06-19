@@ -4,6 +4,7 @@ import android.android.zlibrary.R;
 import android.android.zlibrary.activities.MainZActivity;
 import android.android.zlibrary.adapter.VenueClustersAdapter;
 import android.android.zlibrary.adapter.VenuesAdapter;
+import android.android.zlibrary.app.ZipzApplication;
 import android.android.zlibrary.help.LinearOverrideLayoutManager;
 import android.android.zlibrary.model.VenueListModel;
 import android.os.Bundle;
@@ -41,17 +42,9 @@ public class HomeScreen extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final TextView tvName = view.findViewById(R.id.tvName);
+        TextView tvName = view.findViewById(R.id.tvName);
+        tvName.setText(String.format("Name %s", ZipzApplication.getInstance().getmSessionManager().getUserName()));
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (MainZActivity.name != null) {
-                    tvName.setText("Name " + MainZActivity.name + "");
-                }
-
-            }
-        }, 10);
         recyclerView = view.findViewById(R.id.rcVenuesClusters);
         VenueListModel venueCluster = new VenueListModel(12, "Type 1", "Venue Cluster 1", "https://www.zipz.app/images/places/McDonalds-Top-Center-Shop-1575302165.png", "Address 1",
                 20.456, 44.45666, true, false, 200, "distance", 1, 1, 1,

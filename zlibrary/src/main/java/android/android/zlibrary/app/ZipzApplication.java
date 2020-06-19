@@ -1,4 +1,4 @@
-package android.android.zlibrary;
+package android.android.zlibrary.app;
 
 import android.android.zlibrary.database.LocalStore;
 import android.android.zlibrary.help.AppStartModel;

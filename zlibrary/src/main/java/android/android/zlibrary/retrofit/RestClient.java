@@ -1,7 +1,7 @@
 package android.android.zlibrary.retrofit;
 
 
-import android.android.zlibrary.ZipzApplication;
+import android.android.zlibrary.app.ZipzApplication;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,7 +1,7 @@
 package android.android.zlibrary.activities;
 
 import android.android.zlibrary.R;
-import android.android.zlibrary.ZipzApplication;
+import android.android.zlibrary.app.ZipzApplication;
 import android.android.zlibrary.help.AppStartModel;
 import android.android.zlibrary.help.LogManager;
 import android.android.zlibrary.model.init_response.InitResponse;
@@ -142,17 +142,9 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int itemId = menuItem.getItemId();
-        if (itemId == R.id.nav_coupons) {
-            if (isValidDestination(R.id.couponsScreen)) {
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.couponsScreen);
-            }
-        } else if (itemId == R.id.nav_profile) {
+         if (itemId == R.id.nav_profile) {
             if (isValidDestination(R.id.profileScreen)) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.profileScreen);
-            }
-        } else if (itemId == R.id.nav_camera) {
-            if (isValidDestination(R.id.cameraScreen)) {
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.cameraScreen);
             }
         } else if (itemId == R.id.nav_home) {
             if (isValidDestination(R.id.homeScreen)) {

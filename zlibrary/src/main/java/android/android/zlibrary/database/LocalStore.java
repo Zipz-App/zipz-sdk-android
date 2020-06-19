@@ -1,12 +1,14 @@
 package android.android.zlibrary.database;
 
-import android.android.zlibrary.ZipzApplication;
+import android.android.zlibrary.app.ZipzApplication;
 import android.android.zlibrary.model.User;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.gson.Gson;
+
+import static android.provider.Contacts.SettingsColumns.KEY;
 
 public class LocalStore {
     private static final String PREF_NAME = "zipzsdk";
@@ -20,6 +22,7 @@ public class LocalStore {
     private static final String KEY_USER = "user";
     private static final String KEY_UUID = "uuid" ;
     private static final String IS_LOGIN = "isLoggedIn";
+    private static final String KEY_USERNAME = "username";
 
     public LocalStore(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, 0);
@@ -100,4 +103,13 @@ public class LocalStore {
     public String getUUID() {
         return sharedPreferences.getString(KEY_UUID, "");
     }
+
+    public void setUserName(String name) {
+        editor.putString(KEY_USERNAME, name);
+        editor.commit();
+    }
+    public String getUserName() {
+        return sharedPreferences.getString(KEY_USERNAME, "");
+    }
+
 }

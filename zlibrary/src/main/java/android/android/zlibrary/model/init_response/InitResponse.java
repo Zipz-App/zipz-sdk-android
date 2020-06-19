@@ -1,6 +1,6 @@
 package android.android.zlibrary.model.init_response;
 
-import android.android.zlibrary.model.login_response.Status;
+import android.android.zlibrary.model.registration_response.Status;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
