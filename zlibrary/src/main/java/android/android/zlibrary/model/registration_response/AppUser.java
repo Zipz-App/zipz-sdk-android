@@ -63,11 +63,11 @@ public class AppUser implements Parcelable {
         }
     };
 
-    public Integer getAppUserId() {
+    private Integer getAppUserId() {
         return appUserId;
     }
 
-    public void setAppUserId(Integer appUserId) {
+    private void setAppUserId(Integer appUserId) {
         this.appUserId = appUserId;
     }
 

@@ -1,14 +1,12 @@
 package android.android.zlibrary.database;
 
 import android.android.zlibrary.app.ZipzApplication;
-import android.android.zlibrary.model.User;
+import android.android.zlibrary.model.registration_response.AppUser;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.gson.Gson;
-
-import static android.provider.Contacts.SettingsColumns.KEY;
 
 public class LocalStore {
     private static final String PREF_NAME = "zipzsdk";
@@ -20,7 +18,7 @@ public class LocalStore {
     private static final String KEY_TOKEN = "token";
 
     private static final String KEY_USER = "user";
-    private static final String KEY_UUID = "uuid" ;
+    private static final String KEY_UUID = "uuid";
     private static final String IS_LOGIN = "isLoggedIn";
     private static final String KEY_USERNAME = "username";
 
@@ -48,17 +46,17 @@ public class LocalStore {
     }
 
 
-    public void insertUser(User user) {
+    public void insertUser(AppUser user) {
         Gson gson = new Gson();
         String userJson = gson.toJson(user);
         editor.putString(KEY_USER, userJson);
         editor.apply();
     }
 
-    public User getUser() {
+    public AppUser getUser() {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(KEY_USER, "");
-        return gson.fromJson(json, User.class);
+        return gson.fromJson(json, AppUser.class);
 
     }
 
@@ -72,7 +70,7 @@ public class LocalStore {
         editor.commit();
     }
 
-    public void saveUser(User user) {
+    public void saveUser(AppUser user) {
         Gson gson = new Gson();
         String jsonFavorites = gson.toJson(user);
 
@@ -81,13 +79,13 @@ public class LocalStore {
         editor.apply();
     }
 
-    public User getSavedUser() {
-        User user;
+    public AppUser getSavedUser() {
+        AppUser user;
         sharedPreferences = ZipzApplication.getInstance().getApplicationContext().
                 getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String jsonUser = sharedPreferences.getString("USER", null);
         Gson gson = new Gson();
-        user = gson.fromJson(jsonUser, User.class);
+        user = gson.fromJson(jsonUser, AppUser.class);
         return user;
     }
 
@@ -100,6 +98,7 @@ public class LocalStore {
         editor.putString(KEY_UUID, uuid);
         editor.commit();
     }
+
     public String getUUID() {
         return sharedPreferences.getString(KEY_UUID, "");
     }
@@ -108,6 +107,7 @@ public class LocalStore {
         editor.putString(KEY_USERNAME, name);
         editor.commit();
     }
+
     public String getUserName() {
         return sharedPreferences.getString(KEY_USERNAME, "");
     }

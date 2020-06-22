@@ -61,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
                    // Intent intent = new Intent(LoginActivity.this, MainZActivity.class);
                     ZipzApplication.getInstance().getmSessionManager().setIsLogin(true);
                     getUserInfo();
+                    AppUser appUser = response.body().getResponse().getAppUser();
+                    ZipzApplication.getInstance().getmSessionManager().insertUser(appUser);
                   //  startActivity(intent);
                   //  finish();
                 } else if (response.code() == 422) {
@@ -175,11 +177,17 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public static String getUserInfo() {
+    public static String getUsernameInfo() {
         String fullName = ZipzApplication.getInstance().getmSessionManager().getUserName();
         Log.d("userinfo", "getUserInfo() called with: appUser = [" + fullName + "]");
         Toast.makeText(ZipzApplication.getInstance(), "" + fullName+ "", Toast.LENGTH_SHORT).show();
         return fullName;
+    }
+
+    public static AppUser getUserInfo() {
+        AppUser appUser = ZipzApplication.getInstance().getmSessionManager().getUser();
+        Toast.makeText(ZipzApplication.getInstance(), "app user", Toast.LENGTH_SHORT).show();
+        return appUser;
     }
 
     public static void sentExceptionServer() {
