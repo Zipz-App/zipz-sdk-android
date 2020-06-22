@@ -1,5 +1,6 @@
 package android.android.zapp;
 
+import android.android.zlibrary.activities.LoginActivity;
 import android.android.zlibrary.activities.SplashActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +21,10 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String email = "andjela1201@zipzapp.com";
+                String firstName = "Andjela";
+                String lastName = "Stojancevic";
+                LoginActivity.registrationUser(email, firstName, lastName);
                 Intent intent = new Intent(MainActivity.this, SplashActivity.class);
                 startActivity(intent);
             }
