@@ -47,7 +47,9 @@ public class HomeScreen extends Fragment {
         if (ZipzApplication.getInstance()!=null){
             if (ZipzApplication.getInstance().getmSessionManager()!=null){
                 if (ZipzApplication.getInstance().getmSessionManager().getUserName()!=null){
-                    tvName.setText(String.format("Name %s", ZipzApplication.getInstance().getmSessionManager().getUserName()));
+                    if (tvName!=null){
+                        tvName.setText(String.format("Name %s", ZipzApplication.getInstance().getmSessionManager().getUserName()));
+                    }
                 }
             }
         }

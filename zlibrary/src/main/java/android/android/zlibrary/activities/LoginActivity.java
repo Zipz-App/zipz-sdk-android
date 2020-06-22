@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void registration(String email, String firstName, String lastName) {
+    public void registration(String email, String firstName, String lastName) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("app_id", "7701890734418364");
         jsonObject.addProperty("app_secret", "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe");
