@@ -2,12 +2,16 @@ package android.android.zlibrary.activities;
 
 import android.android.zlibrary.R;
 import android.android.zlibrary.app.ZipzApplication;
+import android.android.zlibrary.help.AppStartModel;
+import android.android.zlibrary.model.init_response.InitResponse;
 import android.android.zlibrary.model.registration_response.AppUser;
 import android.android.zlibrary.model.registration_response.ErrorRegistrationResponse;
 import android.android.zlibrary.model.registration_response.RegistrationResponse;
 import android.android.zlibrary.retrofit.RestClient;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -58,13 +62,15 @@ public class LoginActivity extends AppCompatActivity {
                     String name = response.body().getResponse().getAppUser().getFirstName() + " " + response.body().getResponse().getAppUser().getLastName();
                     ZipzApplication.getInstance().getmSessionManager().setUUID(uuid);
                     ZipzApplication.getInstance().getmSessionManager().setUserName(name);
-                   // Intent intent = new Intent(LoginActivity.this, MainZActivity.class);
+                    // Intent intent = new Intent(LoginActivity.this, MainZActivity.class);
                     ZipzApplication.getInstance().getmSessionManager().setIsLogin(true);
                     getUserInfo();
+
                     AppUser appUser = response.body().getResponse().getAppUser();
                     ZipzApplication.getInstance().getmSessionManager().insertUser(appUser);
-                  //  startActivity(intent);
-                  //  finish();
+                    getUsernameInfo();
+                    //  startActivity(intent);
+                    //  finish();
                 } else if (response.code() == 422) {
 
                     Log.d("aaaaaaaaaa", "error body" + response.errorBody() + "");
@@ -91,6 +97,49 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RegistrationResponse> call, Throwable t) {
                 Log.d("registrationCall", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
+            }
+        });
+    }
+
+    private void initReq() {
+        JsonObject jsonObject = new JsonObject();
+        AppStartModel appStartModel = ZipzApplication.getInstance().getAppStartModel();
+        jsonObject.addProperty("app_id", "7701890734418364");
+        jsonObject.addProperty("app_secret", "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe");
+        jsonObject.addProperty("uuid", ZipzApplication.getInstance().getmSessionManager().getUUID());
+        jsonObject.addProperty("device", appStartModel.getDEVICE());
+        jsonObject.addProperty("os", appStartModel.getOS());
+        jsonObject.addProperty("os_version", appStartModel.getOS_VERSION());
+        jsonObject.addProperty("sdk_version", 1);
+        TelephonyManager telephonyManager = ((TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE));
+        String simOperatorName = telephonyManager.getSimOperatorName();
+        if (simOperatorName != null) {
+            jsonObject.addProperty("carrier", simOperatorName);
+        } else {
+            jsonObject.addProperty("carrier", "");
+        }
+
+        Call<InitResponse> initCall = RestClient.getInstance().service.init(jsonObject);
+        initCall.enqueue(new Callback<InitResponse>() {
+            @Override
+            public void onResponse(Call<InitResponse> call, Response<InitResponse> response) {
+                Log.d("init code", "response code" + response.code() + "");
+                Log.d("init error", "error body" + response.errorBody() + "");
+                if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
+                    InitResponse initResponse = response.body();
+                    assert initResponse != null;
+                    if (initResponse.getResponse().getToken() != null) {
+                        String token = initResponse.getResponse().getToken();
+                        ZipzApplication.getInstance().getmSessionManager().setToken(token);
+                        getUserToken();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InitResponse> call, Throwable t) {
+                Log.d("init", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
             }
         });
     }
@@ -180,7 +229,7 @@ public class LoginActivity extends AppCompatActivity {
     public static String getUsernameInfo() {
         String fullName = ZipzApplication.getInstance().getmSessionManager().getUserName();
         Log.d("userinfo", "getUserInfo() called with: appUser = [" + fullName + "]");
-        Toast.makeText(ZipzApplication.getInstance(), "" + fullName+ "", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ZipzApplication.getInstance(), "" + fullName + "", Toast.LENGTH_SHORT).show();
         return fullName;
     }
 
@@ -188,6 +237,12 @@ public class LoginActivity extends AppCompatActivity {
         AppUser appUser = ZipzApplication.getInstance().getmSessionManager().getUser();
         Toast.makeText(ZipzApplication.getInstance(), "app user", Toast.LENGTH_SHORT).show();
         return appUser;
+    }
+    public static String getUserToken() {
+        String token = ZipzApplication.getInstance().getmSessionManager().getToken();
+        Log.d("userinfo", "getUserInfo() called with: appUser = [" + token + "]");
+        Toast.makeText(ZipzApplication.getInstance(), "" + token + "", Toast.LENGTH_SHORT).show();
+        return token;
     }
 
     public static void sentExceptionServer() {
