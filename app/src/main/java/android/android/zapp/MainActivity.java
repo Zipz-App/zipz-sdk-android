@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = "andjela1201@zipzapp.com";
+                String email = "andjela1202@zipzapp.com";
                 String firstName = "Andjela";
                 String lastName = "Stojancevic";
                 LoginActivity.registrationUser(email, firstName, lastName);
