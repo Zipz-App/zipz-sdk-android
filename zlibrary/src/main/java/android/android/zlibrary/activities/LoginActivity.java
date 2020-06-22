@@ -2,6 +2,7 @@ package android.android.zlibrary.activities;
 
 import android.android.zlibrary.R;
 import android.android.zlibrary.app.ZipzApplication;
+import android.android.zlibrary.model.registration_response.AppUser;
 import android.android.zlibrary.model.registration_response.ErrorRegistrationResponse;
 import android.android.zlibrary.model.registration_response.RegistrationResponse;
 import android.android.zlibrary.retrofit.RestClient;
@@ -81,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, MainZActivity.class);
                     ZipzApplication.getInstance().getmSessionManager().setIsLogin(true);
 
+                    getUserInfo(response.body().getResponse().getAppUser());
                     startActivity(intent);
                     finish();
                 } else if (response.code() == 422) {
@@ -111,6 +113,11 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("registrationCall", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
             }
         });
+    }
+
+    public AppUser getUserInfo(AppUser appUser) {
+        Log.d("aaaa", "getUserInfo() called with: appUser = [" + appUser + "]");
+        return appUser;
     }
 
     public void sentExceptionServer() {

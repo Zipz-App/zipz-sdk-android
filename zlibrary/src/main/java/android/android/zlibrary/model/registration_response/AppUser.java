@@ -1,9 +1,12 @@
 package android.android.zlibrary.model.registration_response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class AppUser {
+public class AppUser implements Parcelable {
     @SerializedName("app_user_id")
     @Expose
     private Integer appUserId;
@@ -31,6 +34,34 @@ public class AppUser {
     @SerializedName("phone")
     @Expose
     private String phone;
+
+    protected AppUser(Parcel in) {
+        if (in.readByte() == 0) {
+            appUserId = null;
+        } else {
+            appUserId = in.readInt();
+        }
+        uuid = in.readString();
+        email = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
+        gender = in.readString();
+        dateOfBirth = in.readString();
+        cpf = in.readString();
+        phone = in.readString();
+    }
+
+    public static final Creator<AppUser> CREATOR = new Creator<AppUser>() {
+        @Override
+        public AppUser createFromParcel(Parcel in) {
+            return new AppUser(in);
+        }
+
+        @Override
+        public AppUser[] newArray(int size) {
+            return new AppUser[size];
+        }
+    };
 
     public Integer getAppUserId() {
         return appUserId;
@@ -102,5 +133,28 @@ public class AppUser {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (appUserId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(appUserId);
+        }
+        dest.writeString(uuid);
+        dest.writeString(email);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(gender);
+        dest.writeString(dateOfBirth);
+        dest.writeString(cpf);
+        dest.writeString(phone);
     }
 }

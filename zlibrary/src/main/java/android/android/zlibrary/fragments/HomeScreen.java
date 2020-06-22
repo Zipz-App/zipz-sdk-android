@@ -43,7 +43,14 @@ public class HomeScreen extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         TextView tvName = view.findViewById(R.id.tvName);
-        tvName.setText(String.format("Name %s", ZipzApplication.getInstance().getmSessionManager().getUserName()));
+
+        if (ZipzApplication.getInstance()!=null){
+            if (ZipzApplication.getInstance().getmSessionManager()!=null){
+                if (ZipzApplication.getInstance().getmSessionManager().getUserName()!=null){
+                    tvName.setText(String.format("Name %s", ZipzApplication.getInstance().getmSessionManager().getUserName()));
+                }
+            }
+        }
 
         recyclerView = view.findViewById(R.id.rcVenuesClusters);
         VenueListModel venueCluster = new VenueListModel(12, "Type 1", "Venue Cluster 1", "https://www.zipz.app/images/places/McDonalds-Top-Center-Shop-1575302165.png", "Address 1",
