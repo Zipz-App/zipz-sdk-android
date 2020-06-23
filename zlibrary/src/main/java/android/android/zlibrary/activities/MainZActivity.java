@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -65,6 +66,7 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
         init();
         requestPermission();
         initRequest();
+        initReq();
         client = LocationServices.getFusedLocationProviderClient(this);
 
         if (ActivityCompat.checkSelfPermission(MainZActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -79,6 +81,56 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
                 }
             }
         });
+    }
+
+    public static void initReq() {
+        JsonObject jsonObject = new JsonObject();
+        AppStartModel appStartModel = ZipzApplication.getInstance().getAppStartModel();
+        jsonObject.addProperty("app_id", "7701890734418364");
+        jsonObject.addProperty("app_secret", "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe");
+        jsonObject.addProperty("uuid", ZipzApplication.getInstance().getmSessionManager().getUUID());
+        jsonObject.addProperty("device", appStartModel.getDEVICE());
+        jsonObject.addProperty("os", appStartModel.getOS());
+        jsonObject.addProperty("os_version", appStartModel.getOS_VERSION());
+        jsonObject.addProperty("sdk_version", 1);
+        TelephonyManager telephonyManager = ((TelephonyManager) ZipzApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE));
+        String simOperatorName = telephonyManager.getSimOperatorName();
+        if (simOperatorName != null) {
+            jsonObject.addProperty("carrier", simOperatorName);
+        } else {
+            jsonObject.addProperty("carrier", "");
+        }
+
+        Call<InitResponse> initCall = RestClient.getInstance().service.init(jsonObject);
+        initCall.enqueue(new Callback<InitResponse>() {
+            @Override
+            public void onResponse(Call<InitResponse> call, Response<InitResponse> response) {
+                Log.d("init code", "response code" + response.code() + "");
+                Log.d("init error", "error body" + response.errorBody() + "");
+                if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
+                    InitResponse initResponse = response.body();
+                    assert initResponse != null;
+                    if (initResponse.getResponse().getToken() != null) {
+                        String token = initResponse.getResponse().getToken();
+                        ZipzApplication.getInstance().getmSessionManager().setToken(token);
+                        getUserToken();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InitResponse> call, Throwable t) {
+                Log.d("init", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
+            }
+        });
+
+    }
+
+    public static String getUserToken() {
+        String token = ZipzApplication.getInstance().getmSessionManager().getToken();
+        Log.d("token", "getUserInfo() called with: appUser = [" + token + "]");
+        return token;
     }
 
     private void initRequest() {
@@ -142,7 +194,7 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int itemId = menuItem.getItemId();
-         if (itemId == R.id.nav_profile) {
+        if (itemId == R.id.nav_profile) {
             if (isValidDestination(R.id.profileScreen)) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.profileScreen);
             }

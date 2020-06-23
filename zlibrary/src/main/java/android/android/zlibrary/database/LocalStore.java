@@ -2,14 +2,20 @@ package android.android.zlibrary.database;
 
 import android.android.zlibrary.app.ZipzApplication;
 import android.android.zlibrary.model.registration_response.AppUser;
+import android.android.zlibrary.model.venuecluster_response.VenueCluster;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 public class LocalStore {
     private static final String PREF_NAME = "zipzsdk";
+    private static final String KEY_VENUE_CLUSTER = "venueclusters";
 
     private SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
@@ -57,6 +63,21 @@ public class LocalStore {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(KEY_USER, "");
         return gson.fromJson(json, AppUser.class);
+
+    }
+    public void insertVenueCluster(List<VenueCluster> venueClusters) {
+        Gson gson = new Gson();
+        String venueClusterJson = gson.toJson(venueClusters);
+        editor.putString(KEY_VENUE_CLUSTER, venueClusterJson);
+        editor.apply();
+    }
+
+    public List<VenueCluster>  getVenueClusterList() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_VENUE_CLUSTER, "");
+        Type type = new TypeToken<List<VenueCluster>>(){}.getType();
+        List<VenueCluster> venueClusterList = gson.fromJson(json, type);
+        return venueClusterList;
 
     }
 

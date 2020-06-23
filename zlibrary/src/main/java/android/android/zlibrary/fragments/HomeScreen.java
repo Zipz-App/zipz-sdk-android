@@ -1,14 +1,16 @@
 package android.android.zlibrary.fragments;
 
 import android.android.zlibrary.R;
-import android.android.zlibrary.activities.MainZActivity;
 import android.android.zlibrary.adapter.VenueClustersAdapter;
 import android.android.zlibrary.adapter.VenuesAdapter;
 import android.android.zlibrary.app.ZipzApplication;
 import android.android.zlibrary.help.LinearOverrideLayoutManager;
 import android.android.zlibrary.model.VenueListModel;
+import android.android.zlibrary.model.venuecluster_response.VenueCLustersResponse;
+import android.android.zlibrary.model.venuecluster_response.VenueCluster;
+import android.android.zlibrary.retrofit.RestClient;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.JsonObject;
+
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeScreen extends Fragment {
 
@@ -44,10 +54,10 @@ public class HomeScreen extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         TextView tvName = view.findViewById(R.id.tvName);
 
-        if (ZipzApplication.getInstance()!=null){
-            if (ZipzApplication.getInstance().getmSessionManager()!=null){
-                if (ZipzApplication.getInstance().getmSessionManager().getUserName()!=null){
-                    if (tvName!=null){
+        if (ZipzApplication.getInstance() != null) {
+            if (ZipzApplication.getInstance().getmSessionManager() != null) {
+                if (ZipzApplication.getInstance().getmSessionManager().getUserName() != null) {
+                    if (tvName != null) {
                         tvName.setText(String.format("Name %s", ZipzApplication.getInstance().getmSessionManager().getUserName()));
                     }
                 }
@@ -66,7 +76,7 @@ public class HomeScreen extends Fragment {
                 "Sao Paolo", "", "place name", "state", "-Shop.Itaaguera", "fast food", "order");
 
         dataSet = new ArrayList<>();
-
+        venueClusters();
         dataSet.add(venueCluster);
         dataSet.add(venueCluster1);
         dataSet.add(venueCluster2);
@@ -95,5 +105,41 @@ public class HomeScreen extends Fragment {
         rvVenues.setLayoutManager(new LinearOverrideLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvVenues.setAdapter(venuesAdapter);
         rvVenues.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycler_layout_animation_fall_down));
+
+        getVenueClusterList();
+    }
+
+    public static void venueClusters() {
+        JsonObject jsonObject = new JsonObject();
+        Call<VenueCLustersResponse> initCall = RestClient.getInstance().service.venueClusters(jsonObject);
+        initCall.enqueue(new Callback<VenueCLustersResponse>() {
+            @Override
+            public void onResponse(Call<VenueCLustersResponse> call, Response<VenueCLustersResponse> response) {
+                Log.d("Venue clusters code", "response code" + response.code() + "");
+                Log.d("Venue clusters error", "error body" + response.errorBody() + "");
+                if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
+                    VenueCLustersResponse venueCLustersResponse = response.body();
+                    if (venueCLustersResponse != null) {
+                        List<VenueCluster> venueClusterList = venueCLustersResponse.getResponse().getVenueClusters();
+                        ZipzApplication.getInstance().getmSessionManager().insertVenueCluster(venueClusterList);
+                        getVenueClusterList();
+                        int size = venueClusterList.size();
+                        Log.d("vc list size", "onResponse() called with: call = [" + size + "]");
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VenueCLustersResponse> call, Throwable t) {
+                Log.d("Venue clusters", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
+            }
+        });
+    }
+
+    public static List<VenueCluster> getVenueClusterList() {
+        Log.d("vc list size", "getVenueClusterList() called" + ZipzApplication.getInstance().getmSessionManager().getVenueClusterList().size() + "");
+        return ZipzApplication.getInstance().getmSessionManager().getVenueClusterList();
     }
 }
