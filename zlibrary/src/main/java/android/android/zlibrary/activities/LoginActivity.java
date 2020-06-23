@@ -65,6 +65,9 @@ public class LoginActivity extends AppCompatActivity {
                     AppUser appUser = response.body().getResponse().getAppUser();
                     ZipzApplication.getInstance().getmSessionManager().insertUser(appUser);
                     getUsernameInfo();
+                    ZipzApplication.getInstance().getmSessionManager().saveMesssage(200,"Success");
+                    checkRequestCode();
+                    checkMessage();
                     //  startActivity(intent);
                     //  finish();
                 } else if (response.code() == 422) {
@@ -79,14 +82,18 @@ public class LoginActivity extends AppCompatActivity {
                         errorModel = converter.convert(response.errorBody());
                         assert errorModel != null;
                         String message = errorModel.getStatus().getError().getEmail().get(0);
-                        sentExceptionForEmail(message, response.code());
-                        Log.d("aaaaaa", "onResponse() called with: call = [" + call + "], response = [" + message + "]");
+                        ZipzApplication.getInstance().getmSessionManager().saveMesssage(response.code(),message);
+                        checkRequestCode();
+                        checkMessage();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    sentExceptionServer(response.code());
+
+                    ZipzApplication.getInstance().getmSessionManager().saveMesssage(response.code(),"Something went wrong");
                     Toast.makeText(ZipzApplication.getInstance(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    checkRequestCode();
+                    checkMessage();
                 }
             }
 
@@ -95,6 +102,13 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("registrationCall", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
             }
         });
+    }
+
+    private static int checkRequestCode() {
+        return ZipzApplication.getInstance().getmSessionManager().getRequestCode();
+    }
+    private static String checkMessage() {
+        return ZipzApplication.getInstance().getmSessionManager().getMessage();
     }
 
     @Override
@@ -161,13 +175,12 @@ public class LoginActivity extends AppCompatActivity {
                         errorModel = converter.convert(response.errorBody());
                         assert errorModel != null;
                         String message = errorModel.getStatus().getError().getEmail().get(0);
-                        sentExceptionForEmail(message,response.code());
                         Log.d("aaaaaa", "onResponse() called with: call = [" + call + "], response = [" + message + "]");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    sentExceptionServer(response.code());
+                    sentExceptionServer();
                     Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -192,14 +205,9 @@ public class LoginActivity extends AppCompatActivity {
         return appUser;
     }
 
-    public static void sentExceptionServer(int responseCode) {
+    public static void sentExceptionServer() {
         String message = "Something went wrong";
         Toast.makeText(ZipzApplication.getInstance(), "" + message + "", Toast.LENGTH_SHORT).show();
     }
 
-    public static String sentExceptionForEmail(String message, int responseCode) {
-        Log.d("error message", "sentExceptionForEmail() message = [" + message + "]");
-        Toast.makeText(ZipzApplication.getInstance(), "" + message + "", Toast.LENGTH_SHORT).show();
-        return "Response code " + responseCode + " ";
-    }
 }

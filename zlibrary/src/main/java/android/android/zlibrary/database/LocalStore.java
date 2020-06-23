@@ -15,7 +15,6 @@ import java.util.List;
 
 public class LocalStore {
     private static final String PREF_NAME = "zipzsdk";
-    private static final String KEY_VENUE_CLUSTER = "venueclusters";
 
     private SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
@@ -27,6 +26,9 @@ public class LocalStore {
     private static final String KEY_UUID = "uuid";
     private static final String IS_LOGIN = "isLoggedIn";
     private static final String KEY_USERNAME = "username";
+    private static final String KEY_VENUE_CLUSTER = "venueclusters";
+    private static final String KEY_REQUEST_CODE = "requestCode";
+    private static final String KEY_MESSAGE = "message";
 
     public LocalStore(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, 0);
@@ -131,6 +133,18 @@ public class LocalStore {
 
     public String getUserName() {
         return sharedPreferences.getString(KEY_USERNAME, "");
+    }
+
+    public void saveMesssage(int code, String message) {
+        editor.putInt(KEY_REQUEST_CODE, code);
+        editor.putString(KEY_MESSAGE, message);
+        editor.commit();
+    }
+    public String getMessage() {
+        return sharedPreferences.getString(KEY_MESSAGE, "");
+    }
+    public int getRequestCode() {
+        return sharedPreferences.getInt(KEY_REQUEST_CODE, 0);
     }
 
 }
