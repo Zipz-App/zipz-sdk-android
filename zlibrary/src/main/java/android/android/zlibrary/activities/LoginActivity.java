@@ -191,7 +191,7 @@ public class LoginActivity extends AppCompatActivity {
     public static String getUsernameInfo() {
         String fullName = ZipzApplication.getInstance().getmSessionManager().getUserName();
         Log.d("username", "getUserInfo() called with: appUser = [" + fullName + "]");
-        Toast.makeText(ZipzApplication.getInstance(), "" + fullName + "", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ZipzApplication.getInstance(), "" + fullName + "", Toast.LENGTH_SHORT).show();
         return fullName;
     }
 
@@ -203,7 +203,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public static void sentExceptionServer() {
         String message = "Something went wrong";
-        Toast.makeText(ZipzApplication.getInstance(), "" + message + "", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(ZipzApplication.getInstance(), "" + message + "", Toast.LENGTH_SHORT).show();
     }
 
 }
