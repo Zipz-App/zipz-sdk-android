@@ -71,10 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                     //  startActivity(intent);
                     //  finish();
                 } else if (response.code() == 422) {
-
                     Log.d("aaaaaaaaaa", "error body" + response.errorBody() + "");
-                    Toast.makeText(ZipzApplication.getInstance(), "Something went wrong", Toast.LENGTH_SHORT).show();
-
                     Converter<ResponseBody, ErrorRegistrationResponse> converter = RestClient.getRetrofit().responseBodyConverter(ErrorRegistrationResponse.class, new Annotation[0]);
                     ErrorRegistrationResponse errorModel = null;
                     try {
@@ -91,7 +88,6 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
 
                     ZipzApplication.getInstance().getmSessionManager().saveMesssage(response.code(),"Something went wrong");
-                    Toast.makeText(ZipzApplication.getInstance(), "Something went wrong", Toast.LENGTH_SHORT).show();
                     checkRequestCode();
                     checkMessage();
                 }
