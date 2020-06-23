@@ -161,7 +161,6 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 } else if (response.code() == 422) {
 
-                    Log.d("aaaaaaaaaa", "error body" + response.errorBody() + "");
                     Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
                     Converter<ResponseBody, ErrorRegistrationResponse> converter = RestClient.getRetrofit().responseBodyConverter(ErrorRegistrationResponse.class, new Annotation[0]);
@@ -171,7 +170,6 @@ public class LoginActivity extends AppCompatActivity {
                         errorModel = converter.convert(response.errorBody());
                         assert errorModel != null;
                         String message = errorModel.getStatus().getError().getEmail().get(0);
-                        Log.d("aaaaaa", "onResponse() called with: call = [" + call + "], response = [" + message + "]");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -203,7 +201,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public static void sentExceptionServer() {
         String message = "Something went wrong";
-       // Toast.makeText(ZipzApplication.getInstance(), "" + message + "", Toast.LENGTH_SHORT).show();
     }
 
 }

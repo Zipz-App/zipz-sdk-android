@@ -114,7 +114,6 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
                         String token = initResponse.getResponse().getToken();
                         ZipzApplication.getInstance().getmSessionManager().setToken(token);
                         getUserToken();
-
                     }
 
                 }
