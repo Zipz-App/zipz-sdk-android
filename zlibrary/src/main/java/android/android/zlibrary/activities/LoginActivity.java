@@ -104,10 +104,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private static int checkRequestCode() {
+    public static int checkRequestCode() {
         return ZipzApplication.getInstance().getmSessionManager().getRequestCode();
     }
-    private static String checkMessage() {
+    public static String checkMessage() {
         return ZipzApplication.getInstance().getmSessionManager().getMessage();
     }
 
