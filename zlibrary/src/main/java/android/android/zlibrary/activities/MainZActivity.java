@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -65,8 +64,11 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
         navigationView = findViewById(R.id.nav_view);
         init();
         requestPermission();
-        initRequest();
-        initReq();
+        //initRequest();
+        String appId = "7701890734418364";
+        String appSecret = "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe";
+        String uuid = ZipzApplication.getInstance().getmSessionManager().getUUID();
+        initReq(appId, appSecret, uuid);
         client = LocationServices.getFusedLocationProviderClient(this);
 
         if (ActivityCompat.checkSelfPermission(MainZActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -83,12 +85,12 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
         });
     }
 
-    public static void initReq() {
+    public static void initReq(String appid, String appSecret, String uuid) {
         JsonObject jsonObject = new JsonObject();
         AppStartModel appStartModel = ZipzApplication.getInstance().getAppStartModel();
-        jsonObject.addProperty("app_id", "7701890734418364");
-        jsonObject.addProperty("app_secret", "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe");
-        jsonObject.addProperty("uuid", ZipzApplication.getInstance().getmSessionManager().getUUID());
+        jsonObject.addProperty("app_id", appid);
+        jsonObject.addProperty("app_secret", appSecret);
+        jsonObject.addProperty("uuid", uuid);
         jsonObject.addProperty("device", appStartModel.getDEVICE());
         jsonObject.addProperty("os", appStartModel.getOS());
         jsonObject.addProperty("os_version", appStartModel.getOS_VERSION());

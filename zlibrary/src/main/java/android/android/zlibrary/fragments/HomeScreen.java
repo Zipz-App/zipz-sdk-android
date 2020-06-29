@@ -139,7 +139,6 @@ public class HomeScreen extends Fragment {
     }
 
     public static List<VenueCluster> getVenueClusterList() {
-        Log.d("vc list size", "getVenueClusterList() called" + ZipzApplication.getInstance().getmSessionManager().getVenueClusterList().size() + "");
         return ZipzApplication.getInstance().getmSessionManager().getVenueClusterList();
     }
 }
