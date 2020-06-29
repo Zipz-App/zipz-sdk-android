@@ -17,7 +17,7 @@ public class SplashActivity extends AppCompatActivity {
         if (ZipzApplication.getInstance().getmSessionManager().isLoggedIn()) {
             String token = ZipzApplication.getInstance().getmSessionManager().getToken();
             Log.d("token", "token = [" + token + "]");
-            Intent intent = new Intent(SplashActivity.this, MainZActivity.class);
+            Intent intent = new Intent(SplashActivity.this, SDKActivity.class);
             startActivity(intent);
             finish();
         } else {

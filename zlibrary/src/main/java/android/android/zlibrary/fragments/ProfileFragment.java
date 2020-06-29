@@ -1,7 +1,7 @@
 package android.android.zlibrary.fragments;
 
 import android.android.zlibrary.R;
-import android.android.zlibrary.activities.MainZActivity;
+import android.android.zlibrary.activities.SDKActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -33,9 +33,9 @@ public class ProfileFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                tvAdvId.setText(" " + MainZActivity.advId + "");
-                tvLatitude.setText(" " + MainZActivity.latitudeValue + "");
-                tvLongitide.setText(" " + MainZActivity.longitudeValue + "");
+                tvAdvId.setText(" " + SDKActivity.advId + "");
+                tvLatitude.setText(" " + SDKActivity.latitudeValue + "");
+                tvLongitide.setText(" " + SDKActivity.longitudeValue + "");
 
             }
         }, 200);
@@ -43,8 +43,8 @@ public class ProfileFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (MainZActivity.name != null) {
-                    tvName.setText("Welcome " + MainZActivity.name + "");
+                if (SDKActivity.name != null) {
+                    tvName.setText("Welcome " + SDKActivity.name + "");
                 }
 
             }

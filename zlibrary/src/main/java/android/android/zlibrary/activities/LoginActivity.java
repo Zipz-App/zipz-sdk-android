@@ -153,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                     String name = response.body().getResponse().getAppUser().getFirstName() + " " + response.body().getResponse().getAppUser().getLastName();
                     ZipzApplication.getInstance().getmSessionManager().setUUID(uuid);
                     ZipzApplication.getInstance().getmSessionManager().setUserName(name);
-                    Intent intent = new Intent(LoginActivity.this, MainZActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, SDKActivity.class);
                     ZipzApplication.getInstance().getmSessionManager().setIsLogin(true);
 
                     getUserInfo();

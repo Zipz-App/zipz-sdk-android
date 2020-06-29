@@ -47,7 +47,7 @@ import retrofit2.Response;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
-public class MainZActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class SDKActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -71,10 +71,10 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
         initReq(appId, appSecret, uuid);
         client = LocationServices.getFusedLocationProviderClient(this);
 
-        if (ActivityCompat.checkSelfPermission(MainZActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(SDKActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        client.getLastLocation().addOnSuccessListener(MainZActivity.this, new OnSuccessListener<Location>() {
+        client.getLastLocation().addOnSuccessListener(SDKActivity.this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
@@ -225,7 +225,7 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
         protected AdvertisingIdClient.Info doInBackground(Void... voids) {
             AdvertisingIdClient.Info adInfo = null;
             try {
-                adInfo = AdvertisingIdClient.getAdvertisingIdInfo(MainZActivity.this);
+                adInfo = AdvertisingIdClient.getAdvertisingIdInfo(SDKActivity.this);
             } catch (IOException e) {
                 LogManager.logError(e);
             } catch (IllegalStateException e) {
@@ -261,7 +261,7 @@ public class MainZActivity extends AppCompatActivity implements NavigationView.O
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainZActivity.this);
+                int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(SDKActivity.this);
                 if (resultCode == ConnectionResult.SUCCESS) {
                     GetAdvertiseId getAdvertiseId = new GetAdvertiseId();
                     getAdvertiseId.execute();
