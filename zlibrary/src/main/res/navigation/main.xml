@@ -7,7 +7,7 @@
     tools:ignore="UnusedNavigation">
     <fragment
         android:id="@+id/homeScreen"
-        android:name="android.android.zlibrary.fragments.HomeScreen"
+        android:name="android.android.zlibrary.fragments.Cluster"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
     <fragment

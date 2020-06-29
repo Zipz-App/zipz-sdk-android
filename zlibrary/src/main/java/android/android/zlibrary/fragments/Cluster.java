@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeScreen extends Fragment {
+public class Cluster extends Fragment {
 
     private VenueClustersAdapter adapter;
     private ArrayList<VenueListModel> dataSet;
@@ -76,7 +76,7 @@ public class HomeScreen extends Fragment {
                 "Sao Paolo", "", "place name", "state", "-Shop.Itaaguera", "fast food", "order");
 
         dataSet = new ArrayList<>();
-        venueClusters();
+        venueClusters(ZipzApplication.getInstance().getmSessionManager().getToken());
         dataSet.add(venueCluster);
         dataSet.add(venueCluster1);
         dataSet.add(venueCluster2);
@@ -109,9 +109,9 @@ public class HomeScreen extends Fragment {
         getVenueClusterList();
     }
 
-    public static void venueClusters() {
+    public static void venueClusters(String token) {
         JsonObject jsonObject = new JsonObject();
-        Call<VenueCLustersResponse> initCall = RestClient.getInstance().service.venueClusters(jsonObject);
+        Call<VenueCLustersResponse> initCall = RestClient.getInstance().service.venueClusters(jsonObject,token);
         initCall.enqueue(new Callback<VenueCLustersResponse>() {
             @Override
             public void onResponse(Call<VenueCLustersResponse> call, Response<VenueCLustersResponse> response) {

@@ -39,13 +39,13 @@ public class RestClient {
                                                 getInstance().getmSessionManager().getToken())
                                         .method(original.method(), original.body());
                                 //if logged in add header access_token
-                                if (ZipzApplication.getInstance().getmSessionManager().isLoggedIn()) {
-                                    requestBuilder.header("Accept", "application/json")
-                                            .header("Authorization", "Bearer " + ZipzApplication.
-                                                    getInstance().getmSessionManager().getToken())
-                                            .method(original.method(), original.body());
-
-                                }
+//                                if (ZipzApplication.getInstance().getmSessionManager().isLoggedIn()) {
+//                                    requestBuilder.header("Accept", "application/json")
+//                                            .header("Authorization", "Bearer " + ZipzApplication.
+//                                                    getInstance().getmSessionManager().getToken())
+//                                            .method(original.method(), original.body());
+//
+//                                }
 
 
                                 Request request = requestBuilder.build();
