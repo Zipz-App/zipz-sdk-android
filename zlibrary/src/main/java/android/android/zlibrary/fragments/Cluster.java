@@ -76,7 +76,7 @@ public class Cluster extends Fragment {
                 "Sao Paolo", "", "place name", "state", "-Shop.Itaaguera", "fast food", "order");
 
         dataSet = new ArrayList<>();
-        venueClusters(ZipzApplication.getInstance().getmSessionManager().getToken());
+        venueClusters();
         dataSet.add(venueCluster);
         dataSet.add(venueCluster1);
         dataSet.add(venueCluster2);
@@ -109,9 +109,9 @@ public class Cluster extends Fragment {
         getVenueClusterList();
     }
 
-    public static void venueClusters(String token) {
+    public static void venueClusters() {
         JsonObject jsonObject = new JsonObject();
-        Call<VenueCLustersResponse> initCall = RestClient.getInstance().service.venueClusters(jsonObject,token);
+        Call<VenueCLustersResponse> initCall = RestClient.getInstance().service.venueClusters(jsonObject);
         initCall.enqueue(new Callback<VenueCLustersResponse>() {
             @Override
             public void onResponse(Call<VenueCLustersResponse> call, Response<VenueCLustersResponse> response) {

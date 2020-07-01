@@ -115,7 +115,7 @@ public class SDKActivity extends AppCompatActivity implements NavigationView.OnN
                     if (initResponse.getResponse().getToken() != null) {
                         String token = initResponse.getResponse().getToken();
                         ZipzApplication.getInstance().getmSessionManager().setToken(token);
-                        getUserToken();
+//                        getUserToken();
                     }
 
                 }

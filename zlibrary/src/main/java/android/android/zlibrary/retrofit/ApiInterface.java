@@ -24,7 +24,7 @@ public interface ApiInterface {
     Call<AdverIdResponse> advertisingId(@Body JsonObject jsonObject);
 
     @POST(Constants.VENUE_CLUSTERS)
-    Call<VenueCLustersResponse> venueClusters(@Body JsonObject jsonObject, @Header("Authorization") String token);
+    Call<VenueCLustersResponse> venueClusters(@Body JsonObject jsonObject);
 
 }
 
