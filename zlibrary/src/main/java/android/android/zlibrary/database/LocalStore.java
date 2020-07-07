@@ -29,6 +29,7 @@ public class LocalStore {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_VENUE_CLUSTER = "venueclusters";
     private static final String KEY_VENUE_CLUSTER_DETAILS = "venueclustersdetails";
+    private static final String KEY_VENUE = "venue";
     private static final String KEY_REQUEST_CODE = "requestCode";
     private static final String KEY_MESSAGE = "message";
 
@@ -89,7 +90,8 @@ public class LocalStore {
     public List<Venue> getVenueClusterDetailsList() {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(KEY_VENUE_CLUSTER_DETAILS, "");
-        Type type = new TypeToken<List<Venue>>(){}.getType();
+        Type type = new TypeToken<List<Venue>>() {
+        }.getType();
         List<Venue> venueClusterList = gson.fromJson(json, type);
         return venueClusterList;
     }
@@ -98,6 +100,22 @@ public class LocalStore {
         Gson gson = new Gson();
         String venueClusterJson = gson.toJson(venue);
         editor.putString(KEY_VENUE_CLUSTER_DETAILS, venueClusterJson);
+        editor.apply();
+    }
+
+    public List<Venue> getVenuesList() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_VENUE, "");
+        Type type = new TypeToken<List<Venue>>() {
+        }.getType();
+        List<Venue> venueClusterList = gson.fromJson(json, type);
+        return venueClusterList;
+    }
+
+    public void insertVenues(List<Venue> venue) {
+        Gson gson = new Gson();
+        String venueClusterJson = gson.toJson(venue);
+        editor.putString(KEY_VENUE, venueClusterJson);
         editor.apply();
     }
 

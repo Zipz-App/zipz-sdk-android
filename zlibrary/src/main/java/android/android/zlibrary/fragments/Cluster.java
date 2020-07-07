@@ -38,6 +38,7 @@ import retrofit2.Response;
 
 public class Cluster extends Fragment {
 
+    private static List<Venue> venues;
     private VenueClustersAdapter adapter;
     private ArrayList<VenueListModel> dataSet;
     RecyclerView recyclerView;
@@ -75,9 +76,7 @@ public class Cluster extends Fragment {
         recyclerView = view.findViewById(R.id.rcVenuesClusters);
 
         dataSet = new ArrayList<>();
-
-        //venueClusters();
-        //getVenueClusterList();
+        getVenueList();
 
         venueClustersRequest();
         venueClustersDetails();
@@ -111,11 +110,8 @@ public class Cluster extends Fragment {
                 if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
                     VenueClusterDetailsResponse venueClusterDetailsResponse = response.body();
                     if (venueClusterDetailsResponse != null) {
-                        Log.d("vc details!!!", "onResponse() called with: call = [" + response + "]");
                         List<Venue> venueList = venueClusterDetailsResponse.getResponse().getVenues();
                         int size = venueList.size();
-                        Log.d("vc list size", "onResponse() called with: call = [" + size + "]");
-
                     }
 
                 }
@@ -136,36 +132,63 @@ public class Cluster extends Fragment {
             @Override
             public void onResponse(Call<VenuesResponse> call, Response<VenuesResponse> response) {
                 if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
-                    Log.d("venue call AA", "onResponse() called with: call = [" + call + "], response = [" + response + "]");
                     VenuesResponse venuesResponse = response.body();
                     venueList = venuesResponse.getResponse().getVenues();
                     populateVenueLists();
-                    Log.d("venue call AAA", "onResponse() size!!! " + venueList.size() + "");
                 }
             }
 
             @Override
             public void onFailure(Call<VenuesResponse> call, Throwable t) {
-                Log.d("venue call AAA", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
+                Log.d("venue call", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
             }
         });
 
 
     }
 
-    private void populateVenueLists() {
-        if (venueList != null && venueList.size() != 0) {
-        Log.d("venues !!!", "populateLists() called");
-        venueAdapter = new VenueAdapter(venueList);
-        rvVenues.setHasFixedSize(true);
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvVenues.setLayoutManager(layoutManager);
-        rvVenues.addItemDecoration(new SpaceItemDecoration(18));
-        rvVenues.setAdapter(venueAdapter);
+    public static void getVenueList() {
+        JsonObject jsonObject = new JsonObject();
+        final Call<VenuesResponse> venuesCall = RestClient.getInstance().service.
+                venues(jsonObject);
+        venuesCall.enqueue(new Callback<VenuesResponse>() {
+            @Override
+            public void onResponse(Call<VenuesResponse> call, Response<VenuesResponse> response) {
+                if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
+                    Log.d("venue call", "onResponse() called with: call = [" + call + "], response = [" + response + "]");
+                    VenuesResponse venuesResponse = response.body();
+                    venues = venuesResponse.getResponse().getVenues();
+                    ZipzApplication.getInstance().getmSessionManager().insertVenues(venues);
+                    getVenuesList();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VenuesResponse> call, Throwable t) {
+                Log.d("venue call", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
+            }
+        });
+
+
     }
 
-}
+    public static List<Venue> getVenuesList() {
+        return ZipzApplication.getInstance().getmSessionManager().getVenuesList();
+    }
+
+    private void populateVenueLists() {
+        if (venueList != null && venueList.size() != 0) {
+            Log.d("venues !!!", "populateLists() called");
+            venueAdapter = new VenueAdapter(venueList);
+            rvVenues.setHasFixedSize(true);
+            LinearLayoutManager layoutManager
+                    = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            rvVenues.setLayoutManager(layoutManager);
+            rvVenues.addItemDecoration(new SpaceItemDecoration(18));
+            rvVenues.setAdapter(venueAdapter);
+        }
+
+    }
 
     private void venueClustersRequest() {
         JsonObject jsonObject = new JsonObject();
