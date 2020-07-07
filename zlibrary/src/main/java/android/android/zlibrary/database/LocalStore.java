@@ -3,6 +3,7 @@ package android.android.zlibrary.database;
 import android.android.zlibrary.app.ZipzApplication;
 import android.android.zlibrary.model.registration_response.AppUser;
 import android.android.zlibrary.model.venuecluster_response.VenueCluster;
+import android.android.zlibrary.model.venueclusterdetails_response.Venue;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class LocalStore {
     private static final String IS_LOGIN = "isLoggedIn";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_VENUE_CLUSTER = "venueclusters";
+    private static final String KEY_VENUE_CLUSTER_DETAILS = "venueclustersdetails";
     private static final String KEY_REQUEST_CODE = "requestCode";
     private static final String KEY_MESSAGE = "message";
 
@@ -67,6 +69,7 @@ public class LocalStore {
         return gson.fromJson(json, AppUser.class);
 
     }
+
     public void insertVenueCluster(List<VenueCluster> venueClusters) {
         Gson gson = new Gson();
         String venueClusterJson = gson.toJson(venueClusters);
@@ -74,13 +77,28 @@ public class LocalStore {
         editor.apply();
     }
 
-    public List<VenueCluster>  getVenueClusterList() {
+    public List<VenueCluster> getVenueClusterList() {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(KEY_VENUE_CLUSTER, "");
-        Type type = new TypeToken<List<VenueCluster>>(){}.getType();
+        Type type = new TypeToken<List<VenueCluster>>() {
+        }.getType();
         List<VenueCluster> venueClusterList = gson.fromJson(json, type);
         return venueClusterList;
+    }
 
+    public List<Venue> getVenueClusterDetailsList() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_VENUE_CLUSTER_DETAILS, "");
+        Type type = new TypeToken<List<Venue>>(){}.getType();
+        List<Venue> venueClusterList = gson.fromJson(json, type);
+        return venueClusterList;
+    }
+
+    public void insertVenueClusterDetails(List<Venue> venue) {
+        Gson gson = new Gson();
+        String venueClusterJson = gson.toJson(venue);
+        editor.putString(KEY_VENUE_CLUSTER_DETAILS, venueClusterJson);
+        editor.apply();
     }
 
     public boolean isLoggedIn() {
@@ -140,9 +158,11 @@ public class LocalStore {
         editor.putString(KEY_MESSAGE, message);
         editor.commit();
     }
+
     public String getMessage() {
         return sharedPreferences.getString(KEY_MESSAGE, "");
     }
+
     public int getRequestCode() {
         return sharedPreferences.getInt(KEY_REQUEST_CODE, 0);
     }
