@@ -4,6 +4,8 @@ import android.android.zlibrary.app.ZipzApplication;
 import android.android.zlibrary.model.registration_response.AppUser;
 import android.android.zlibrary.model.venuecluster_response.VenueCluster;
 import android.android.zlibrary.model.venueclusterdetails_response.Venue;
+import android.android.zlibrary.model.venuedetails_response.PrivateOffer;
+import android.android.zlibrary.model.venuedetails_response.PublicOffer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -32,6 +34,9 @@ public class LocalStore {
     private static final String KEY_VENUE = "venue";
     private static final String KEY_REQUEST_CODE = "requestCode";
     private static final String KEY_MESSAGE = "message";
+    private static final String KEY_PRIVATE_OFFER = "privateoffer";
+    private static final String KEY_PUBLIC_OFFER = "publicoffer";
+
 
     public LocalStore(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, 0);
@@ -117,6 +122,38 @@ public class LocalStore {
         String venueClusterJson = gson.toJson(venue);
         editor.putString(KEY_VENUE, venueClusterJson);
         editor.apply();
+    }
+
+    public void insertPrivateOfferList(List<PrivateOffer> privateOffers) {
+        Gson gson = new Gson();
+        String privateOfferList = gson.toJson(privateOffers);
+        editor.putString(KEY_PRIVATE_OFFER, privateOfferList);
+        editor.apply();
+    }
+
+    public List<PrivateOffer> getPrivateOfferList() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_PRIVATE_OFFER, "");
+        Type type = new TypeToken<List<PrivateOffer>>() {
+        }.getType();
+        List<PrivateOffer> privateOffers = gson.fromJson(json, type);
+        return privateOffers;
+    }
+
+    public void insertPublicOfferList(List<PublicOffer> publicOffers) {
+        Gson gson = new Gson();
+        String publicOfferList = gson.toJson(publicOffers);
+        editor.putString(KEY_PUBLIC_OFFER, publicOfferList);
+        editor.apply();
+    }
+
+    public List<PublicOffer> getPublicOfferList() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_PUBLIC_OFFER, "");
+        Type type = new TypeToken<List<PrivateOffer>>() {
+        }.getType();
+        List<PublicOffer> publicOffers = gson.fromJson(json, type);
+        return publicOffers;
     }
 
     public boolean isLoggedIn() {

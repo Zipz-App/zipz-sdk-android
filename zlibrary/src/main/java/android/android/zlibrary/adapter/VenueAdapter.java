@@ -1,6 +1,7 @@
 package android.android.zlibrary.adapter;
 
 import android.android.zlibrary.R;
+import android.android.zlibrary.fragments.VenueDetailsFragment;
 import android.android.zlibrary.model.venueclusterdetails_response.Venue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -42,6 +44,19 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
         holder.txtVenueWorkingHours.setText(venue.getCategory().getName());
         holder.txtVenueNeighbornhood.setText(venue.getNeighborhood());
         Picasso.get().load(venue.getImage()).into(holder.imgVenue);
+        holder.llItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                VenueDetailsFragment myFragment = VenueDetailsFragment.
+                        newInstance(venue.getUuid(), "loja", venue.getName(), venue.getAddress(), venue.getImage());
+                activity.getSupportFragmentManager().
+                        beginTransaction().
+                        replace(R.id.nav_host_fragment, myFragment).
+                        addToBackStack(null).
+                        commitAllowingStateLoss();
+            }
+        });
 
     }
 
@@ -64,6 +79,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> 
             this.txtVenueNeighbornhood = itemView.findViewById(R.id.txtVenueNeighbornhood);
             this.txtVenueAdrress = itemView.findViewById(R.id.txtVenueAdrress);
             this.txtVenueWorkingHours = itemView.findViewById(R.id.txtVenueWorkingHours);
+            this.llItem = itemView.findViewById(R.id.linearLayout);
 
         }
     }

@@ -23,7 +23,6 @@ import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,7 +39,7 @@ public class VenueClusterDetailsFragment extends Fragment {
     private ImageView ivBack, ivVenueCluster, ivVenueClusterDetails;
     private TextView tvToolbarTitle;
     private TextView tvVenueClusterName, tvVenueClusterAddress;
-
+    private static String errorMessage;
 
     public static VenueClusterDetailsFragment newInstance(String uuid, String venueClusterType,
                                                           String venueClusterName, String venueClusterAddress, String venueClusterImage) {
@@ -84,11 +83,20 @@ public class VenueClusterDetailsFragment extends Fragment {
             }
         });
 
-        getVenueClustersDetails(uuid);
-        getVCDetails(uuid);
 
-        List<Venue> aa = getVenueClustersListDetails(uuid);
-        Log.d("aaa !!", "onCreateView() called with: inflater = [" + aa.size() + "]");
+        getVCDetails(uuid);
+        getVenueClustersDetails(uuid);
+
+
+//        for test
+//        List<Venue> list = getVenueClustersListDetails(uuid);
+//        if (list.size() != 0) {
+//            Log.d("size", "onCreateView() called with: inflater = [" + list.size() + "]");
+//        }
+//
+//        String message = getVenueClusterDetailsCallback();
+//        Log.d("test", "onCreateView() " + message);
+
 
         return root;
 
@@ -97,117 +105,115 @@ public class VenueClusterDetailsFragment extends Fragment {
     private void getVCDetails(String uuid) {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("uuid", uuid);
-        Call<VenueClusterDetailsResponse> venueClusterDetailsCall = RestClient.getInstance().service.
-                venueClustersDetails(jsonObject);
-        venueClusterDetailsCall.enqueue(new Callback<VenueClusterDetailsResponse>() {
-            @Override
-            public void onResponse(Call<VenueClusterDetailsResponse> call, Response<VenueClusterDetailsResponse> response) {
-                if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
-                    Log.d("venue Cluster details", "onResponse() called with: call = [" + call + "], response = [" + response + "]");
-                    VenueClusterDetailsResponse venueClusterDetailsResponse = response.body();
-                    if (venueClusterDetailsResponse.getStatus().getSuccess()) {
-                        VenueClusterDetailsResponse clusterDetailsResponse = response.body();
-                        if (clusterDetailsResponse != null) {
-                            List<Venue> venueList = clusterDetailsResponse.getResponse().getVenues();
-
-                            populateLists(venueList);
-
-                            int size = venueList.size();
-                            Log.d("vc frfrfr", "onResponse() called with: call = [" + size + "]");
+        if (uuid != null) {
+            Call<VenueClusterDetailsResponse> venueClusterDetailsCall = RestClient.getInstance().service.
+                    venueClustersDetails(jsonObject);
+            venueClusterDetailsCall.enqueue(new Callback<VenueClusterDetailsResponse>() {
+                @Override
+                public void onResponse(Call<VenueClusterDetailsResponse> call, Response<VenueClusterDetailsResponse> response) {
+                    if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
+                        Log.d("venue Cluster AAA", "onResponse() called with: call = [" + call + "], response = [" + response + "]");
+                        VenueClusterDetailsResponse venueClusterDetailsResponse = response.body();
+                        if (venueClusterDetailsResponse.getStatus().getSuccess()) {
+                            VenueClusterDetailsResponse clusterDetailsResponse = response.body();
+                            if (clusterDetailsResponse != null) {
+                                List<Venue> venueList = clusterDetailsResponse.getResponse().getVenues();
+                                int size = venueList.size();
+                                if (size == 0) {
+                                    venueClusterDetailsCallback("List of venue is null for this venue cluster");
+                                } else {
+                                    venueClusterDetailsCallback("Success");
+                                    populateLists();
+                                    ZipzApplication.getInstance().getmSessionManager().insertVenueClusterDetails(venueList);
+                                    getVenueClusterDetailsList();
+                                }
+                                Log.d("vc ok", "onResponse() called with: call = [" + size + "]");
+                            }
+                        } else if (venueClusterDetailsResponse.getStatus().getStatusCode() == 422) {
+                            venueClusterDetailsCallback("The uuid field is required.");
                         }
-                    } else if (venueClusterDetailsResponse.getStatus().getStatusCode() == 422) {
 
+                    } else {
+                        if (response.code() == 500) {
+                            venueClusterDetailsCallback("Something went wrong");
+                        }
                     }
-
+                    getVenueClusterDetailsCallback();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<VenueClusterDetailsResponse> call, Throwable t) {
-                Log.d("venue Cluster Response", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
-            }
-        });
+                @Override
+                public void onFailure(Call<VenueClusterDetailsResponse> call, Throwable t) {
+                    Log.d("venue Cluster Response", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
+                }
+            });
+        } else {
+            venueClusterDetailsCallback("The uuid field is required.");
+        }
+
+    }
+
+    private static String venueClusterDetailsCallback(String message) {
+        errorMessage = message;
+        return message;
+    }
+
+    public static String getVenueClusterDetailsCallback() {
+        return errorMessage;
     }
 
     public static void getVenueClustersDetails(String uuid) {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("uuid", uuid);
-        Call<VenueClusterDetailsResponse> venueClusterDetailsCall = RestClient.getInstance().service.
-                venueClustersDetails(jsonObject);
-        venueClusterDetailsCall.enqueue(new Callback<VenueClusterDetailsResponse>() {
-            @Override
-            public void onResponse(Call<VenueClusterDetailsResponse> call, Response<VenueClusterDetailsResponse> response) {
-                if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
-                    Log.d("venue Cluster details", "onResponse() called with: call = [" + call + "], response = [" + response + "]");
-                    VenueClusterDetailsResponse venueClusterDetailsResponse = response.body();
-                    if (venueClusterDetailsResponse.getStatus().getSuccess()) {
-                        VenueClusterDetailsResponse clusterDetailsResponse = response.body();
-                        if (clusterDetailsResponse != null) {
-                            List<Venue> venueList = clusterDetailsResponse.getResponse().getVenues();
-
-                            ZipzApplication.getInstance().getmSessionManager().insertVenueClusterDetails(venueList);
-                            getVenueClusterDetailsList();
-
-                            int size = venueList.size();
-                            Log.d("vc frfrfr", "onResponse() called with: call = [" + size + "]");
+        if (uuid != null) {
+            Call<VenueClusterDetailsResponse> venueClusterDetailsCall = RestClient.getInstance().service.
+                    venueClustersDetails(jsonObject);
+            venueClusterDetailsCall.enqueue(new Callback<VenueClusterDetailsResponse>() {
+                @Override
+                public void onResponse(Call<VenueClusterDetailsResponse> call, Response<VenueClusterDetailsResponse> response) {
+                    if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
+                        Log.d("venue Cluster AAA", "onResponse() called with: call = [" + call + "], response = [" + response + "]");
+                        VenueClusterDetailsResponse venueClusterDetailsResponse = response.body();
+                        if (venueClusterDetailsResponse.getStatus().getSuccess()) {
+                            VenueClusterDetailsResponse clusterDetailsResponse = response.body();
+                            if (clusterDetailsResponse != null) {
+                                List<Venue> venueList = clusterDetailsResponse.getResponse().getVenues();
+                                int size = venueList.size();
+                                if (size == 0) {
+                                    venueClusterDetailsCallback("List of venue is null for this venue cluster");
+                                } else {
+                                    venueClusterDetailsCallback("Success");
+                                    ZipzApplication.getInstance().getmSessionManager().insertVenueClusterDetails(venueList);
+                                    getVenueClusterDetailsList();
+                                }
+                                Log.d("vc ok", "onResponse() called with: call = [" + size + "]");
+                            }
+                        } else if (venueClusterDetailsResponse.getStatus().getStatusCode() == 422) {
+                            venueClusterDetailsCallback("The uuid field is required.");
                         }
-                    } else if (venueClusterDetailsResponse.getStatus().getStatusCode() == 422) {
 
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<VenueClusterDetailsResponse> call, Throwable t) {
-                Log.d("venue Cluster Response", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
-            }
-        });
-    }
-
-    public static List<Venue> getVenueClustersListDetails(String uuid) {
-        final List<Venue>[] venueList = new List[0];
-        final JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("uuid", uuid);
-        Call<VenueClusterDetailsResponse> venueClusterDetailsCall = RestClient.getInstance().service.
-                venueClustersDetails(jsonObject);
-        venueClusterDetailsCall.enqueue(new Callback<VenueClusterDetailsResponse>() {
-            @Override
-            public void onResponse(Call<VenueClusterDetailsResponse> call, Response<VenueClusterDetailsResponse> response) {
-                if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
-                    Log.d("venue Cluster details", "onResponse() called with: call = [" + call + "], response = [" + response + "]");
-                    VenueClusterDetailsResponse venueClusterDetailsResponse = response.body();
-                    if (venueClusterDetailsResponse.getStatus().getSuccess()) {
-                        VenueClusterDetailsResponse clusterDetailsResponse = response.body();
-                        if (clusterDetailsResponse != null) {
-                             venueList[0] = clusterDetailsResponse.getResponse().getVenues();
-
-                            ZipzApplication.getInstance().getmSessionManager().insertVenueClusterDetails(venueList[0]);
-                            getVenueClusterDetailsList();
-
-                            int size = venueList[0].size();
-                            Log.d("vc frfrfr", "onResponse() called with: call = [" + size + "]");
+                    } else {
+                        if (response.code() == 500) {
+                            venueClusterDetailsCallback("Something went wrong");
                         }
-                    } else if (venueClusterDetailsResponse.getStatus().getStatusCode() == 422) {
-
                     }
-
                 }
-            }
 
-            @Override
-            public void onFailure(Call<VenueClusterDetailsResponse> call, Throwable t) {
-                Log.d("venue Cluster Response", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
-            }
-        });
-        return venueList[0];
+                @Override
+                public void onFailure(Call<VenueClusterDetailsResponse> call, Throwable t) {
+                    Log.d("venue Cluster Response", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
+                }
+            });
+        } else {
+            venueClusterDetailsCallback("The uuid field is required.");
+        }
     }
 
     public static List<Venue> getVenueClusterDetailsList() {
         return ZipzApplication.getInstance().getmSessionManager().getVenueClusterDetailsList();
     }
 
-    private void populateLists(List<Venue> venueList) {
+    private void populateLists() {
+        List<Venue> venueList = ZipzApplication.getInstance().getmSessionManager().getVenueClusterDetailsList();
         if (venueList != null && venueList.size() != 0) {
             VenueAdapter adapter = new VenueAdapter(venueList);
             rvVenue.setHasFixedSize(true);

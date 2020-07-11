@@ -6,6 +6,7 @@ import android.android.zlibrary.model.registration_response.RegistrationResponse
 import android.android.zlibrary.model.venue_response.VenuesResponse;
 import android.android.zlibrary.model.venuecluster_response.VenueCLustersResponse;
 import android.android.zlibrary.model.venueclusterdetails_response.VenueClusterDetailsResponse;
+import android.android.zlibrary.model.venuedetails_response.VenuesDetailsResponse;
 
 import com.google.gson.JsonObject;
 
@@ -32,5 +33,8 @@ public interface ApiInterface {
 
     @POST(Constants.VENUES)
     Call<VenuesResponse> venues(@Body JsonObject jsonObject);
+
+    @POST(Constants.VENUES_DETAILS)
+    Call<VenuesDetailsResponse> venueDetails(@Body JsonObject jsonObject);
 }
 
