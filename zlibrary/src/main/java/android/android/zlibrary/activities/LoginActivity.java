@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     public EditText etEmail, etFirstName, etLastName;
     public Button btnLogin;
 
+
     public static void registrationUser(String email, String firstName, String lastName) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("app_id", "7701890734418364");
