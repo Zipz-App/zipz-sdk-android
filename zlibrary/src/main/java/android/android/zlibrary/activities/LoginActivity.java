@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     ZipzApplication.getInstance().getmSessionManager().setUserName(name);
                     // Intent intent = new Intent(LoginActivity.this, MainZActivity.class);
                     ZipzApplication.getInstance().getmSessionManager().setIsLogin(true);
-                    //getUserInfo();
+                    getUserInfo();
 
                     AppUser appUser = response.body().getResponse().getAppUser();
                     ZipzApplication.getInstance().getmSessionManager().insertUser(appUser);
@@ -154,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, SDKActivity.class);
                     ZipzApplication.getInstance().getmSessionManager().setIsLogin(true);
 
-                    //getUserInfo();
+                    getUserInfo();
                     startActivity(intent);
                     finish();
                 } else if (response.code() == 422) {
@@ -184,17 +184,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-//    public static String getUsernameInfo() {
-//        String fullName = ZipzApplication.getInstance().getmSessionManager().getUserName();
-//        Log.d("username", "getUserInfo() called with: appUser = [" + fullName + "]");
-//        return fullName;
-//    }
-//
-//    public static AppUser getUserInfo() {
-//        AppUser appUser = ZipzApplication.getInstance().getmSessionManager().getUser();
-//        Log.d("user info", "getUserInfo() called with: appUser = [" + appUser + "]");
-//        return appUser;
-//    }
+
+    public static AppUser getUserInfo() {
+        AppUser appUser = ZipzApplication.getInstance().getmSessionManager().getUser();
+        Log.d("user info", "getUserInfo() called with: appUser = [" + appUser + "]");
+        return appUser;
+    }
 
     public static void sentExceptionServer() {
         String message = "Something went wrong";
