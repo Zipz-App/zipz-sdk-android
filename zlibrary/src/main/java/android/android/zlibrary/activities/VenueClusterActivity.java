@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class VenueClusterActivity extends Activity {
 
-    TextView txtVenueClusterName,txtVenueType,txtVenueAdrress;
+    TextView txtVenueClusterName, txtVenueType, txtVenueAdrress;
     ImageView imgVenue;
     private VenuesAdapter venuesAdapter;
     private ArrayList<VenueListModel> venueListModels;

@@ -2,7 +2,6 @@ package android.android.zlibrary.adapter;
 
 import android.android.zlibrary.R;
 import android.android.zlibrary.activities.OfferActivity;
-import android.android.zlibrary.activities.VenueActivity;
 import android.android.zlibrary.help.Helper;
 import android.android.zlibrary.model.VenueListModel;
 import android.content.Context;
@@ -24,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class OffersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    // demo adapter
     private List<VenueListModel> dataSet;
     private Context context;
     private Drawable favorite_drawable;
@@ -179,9 +179,9 @@ public class OffersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(context, OfferActivity.class);
-                                intent.putExtra("name",item.getPlace_name());
-                                intent.putExtra("type",item.getPlace_category_name());
-                                intent.putExtra("address",item.getAddress());
+                                intent.putExtra("name", item.getPlace_name());
+                                intent.putExtra("type", item.getPlace_category_name());
+                                intent.putExtra("address", item.getAddress());
                                 context.startActivity(intent);
 
                             }

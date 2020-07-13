@@ -3,10 +3,8 @@ package android.android.zlibrary.fragments;
 import android.android.zlibrary.R;
 import android.android.zlibrary.adapter.ShoppingAdapter;
 import android.android.zlibrary.adapter.VenueAdapter;
-import android.android.zlibrary.adapter.VenueClustersAdapter;
 import android.android.zlibrary.app.ZipzApplication;
 import android.android.zlibrary.help.SpaceItemDecoration;
-import android.android.zlibrary.model.VenueListModel;
 import android.android.zlibrary.model.venue_response.VenuesResponse;
 import android.android.zlibrary.model.venuecluster_response.VenueCLustersResponse;
 import android.android.zlibrary.model.venuecluster_response.VenueCluster;
@@ -39,8 +37,6 @@ import retrofit2.Response;
 public class Cluster extends Fragment {
 
     private static List<Venue> venues;
-    private VenueClustersAdapter adapter;
-    private ArrayList<VenueListModel> dataSet;
     RecyclerView recyclerView;
 
     List<VenueCluster> shoppingList = new ArrayList<>();
@@ -74,8 +70,6 @@ public class Cluster extends Fragment {
         }
 
         recyclerView = view.findViewById(R.id.rcVenuesClusters);
-
-        dataSet = new ArrayList<>();
         getVenueList();
 
         venueClustersRequest();

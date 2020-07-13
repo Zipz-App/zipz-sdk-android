@@ -64,7 +64,7 @@ public class SDKActivity extends AppCompatActivity implements NavigationView.OnN
         navigationView = findViewById(R.id.nav_view);
         init();
         requestPermission();
-        //initRequest();
+
         String appId = "7701890734418364";
         String appSecret = "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe";
         String uuid = ZipzApplication.getInstance().getmSessionManager().getUUID();
@@ -133,53 +133,6 @@ public class SDKActivity extends AppCompatActivity implements NavigationView.OnN
         String token = ZipzApplication.getInstance().getmSessionManager().getToken();
         Log.d("token", "getUserInfo() called with: appUser = [" + token + "]");
         return token;
-    }
-
-    private void initRequest() {
-        JsonObject jsonObject = new JsonObject();
-        AppStartModel appStartModel = ZipzApplication.getInstance().getAppStartModel();
-        jsonObject.addProperty("app_id", "7701890734418364");
-        jsonObject.addProperty("app_secret", "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe");
-        jsonObject.addProperty("uuid", ZipzApplication.getInstance().getmSessionManager().getUUID());
-        jsonObject.addProperty("device", appStartModel.getDEVICE());
-        jsonObject.addProperty("os", appStartModel.getOS());
-        jsonObject.addProperty("os_version", appStartModel.getOS_VERSION());
-        jsonObject.addProperty("sdk_version", 1);
-        TelephonyManager telephonyManager = ((TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE));
-        String simOperatorName = telephonyManager.getSimOperatorName();
-        if (simOperatorName != null) {
-            jsonObject.addProperty("carrier", simOperatorName);
-        } else {
-            jsonObject.addProperty("carrier", "");
-        }
-
-        Call<InitResponse> initCall = RestClient.getInstance().service.init(jsonObject);
-        initCall.enqueue(new Callback<InitResponse>() {
-            @Override
-            public void onResponse(Call<InitResponse> call, Response<InitResponse> response) {
-                Log.d("init code", "response code" + response.code() + "");
-                Log.d("init error", "error body" + response.errorBody() + "");
-                if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
-                    InitResponse initResponse = response.body();
-//                    assert initResponse != null;
-//                    if (initResponse.getResponse().getAppUser() != null) {
-//                        if (initResponse.getResponse().getAppUser().getFirstName() != null) {
-//                            String firstName = initResponse.getResponse().getAppUser().getFirstName();
-//                            String lastName = initResponse.getResponse().getAppUser().getLastName();
-//                            Log.d("username", "onResponse() called with: call = [" + firstName + "], response = [" + lastName + "]");
-//                            name = firstName + " " + lastName;
-//                        }
-//
-//                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<InitResponse> call, Throwable t) {
-                Log.d("init", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
-            }
-        });
     }
 
     private void requestPermission() {

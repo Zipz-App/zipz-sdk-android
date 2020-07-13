@@ -13,7 +13,8 @@ public class Helper {
         if (imgDimen == 0) {
             View v = LayoutInflater.from(context).inflate(R.layout.item_venue_list, null);
             RelativeLayout linearContent = v.findViewById(R.id.linearContent);
-            linearContent.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            linearContent.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
             imgDimen = linearContent.getMeasuredHeight();
         }
         return imgDimen;

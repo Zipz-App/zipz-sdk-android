@@ -19,8 +19,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.ViewHolder> {
-    private List<Venue> venueList;
 
+    private List<Venue> venueList;
 
     public VenueAdapter(List<Venue> venueList) {
         this.venueList = venueList;

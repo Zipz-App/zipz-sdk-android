@@ -4,6 +4,8 @@ import java.util.List;
 
 public class VenueListModel extends VenueModel {
 
+    //demo test
+
     private long cityID;
     private long shoppingID;
     private long establishmentID;

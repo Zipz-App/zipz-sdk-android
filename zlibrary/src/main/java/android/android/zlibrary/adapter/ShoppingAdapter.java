@@ -43,7 +43,8 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 VenueClusterDetailsFragment myFragment = VenueClusterDetailsFragment.
-                        newInstance(venueCluster.getUuid(), "shopping", venueCluster.getName(), venueCluster.getAddress(), venueCluster.getImage());
+                        newInstance(venueCluster.getUuid(), "shopping",
+                                venueCluster.getName(), venueCluster.getAddress(), venueCluster.getImage());
                 activity.getSupportFragmentManager().
                         beginTransaction().
                         replace(R.id.nav_host_fragment, myFragment).

@@ -171,7 +171,7 @@ public class VenueClusterDetailsFragment extends Fragment {
                 @Override
                 public void onResponse(Call<VenueClusterDetailsResponse> call, Response<VenueClusterDetailsResponse> response) {
                     if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
-                        Log.d("venue Cluster AAA", "onResponse() called with: call = [" + call + "], response = [" + response + "]");
+                        Log.d("venue Cluster", "onResponse() called with: call = [" + call + "], response = [" + response + "]");
                         VenueClusterDetailsResponse venueClusterDetailsResponse = response.body();
                         if (venueClusterDetailsResponse.getStatus().getSuccess()) {
                             VenueClusterDetailsResponse clusterDetailsResponse = response.body();

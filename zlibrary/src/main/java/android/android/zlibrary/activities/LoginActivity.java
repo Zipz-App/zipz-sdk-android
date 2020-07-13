@@ -30,7 +30,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public EditText etEmail, etPassword, etFirstName, etLastName;
+    public EditText etEmail, etFirstName, etLastName;
     public Button btnLogin;
 
     public static void registrationUser(String email, String firstName, String lastName) {
@@ -60,18 +60,17 @@ public class LoginActivity extends AppCompatActivity {
                     ZipzApplication.getInstance().getmSessionManager().setUserName(name);
                     // Intent intent = new Intent(LoginActivity.this, MainZActivity.class);
                     ZipzApplication.getInstance().getmSessionManager().setIsLogin(true);
-                    getUserInfo();
+                    //getUserInfo();
 
                     AppUser appUser = response.body().getResponse().getAppUser();
                     ZipzApplication.getInstance().getmSessionManager().insertUser(appUser);
-                    getUsernameInfo();
+                    //getUsernameInfo();
                     ZipzApplication.getInstance().getmSessionManager().saveMesssage(200,"Success");
                     checkRequestCode();
                     checkMessage();
                     //  startActivity(intent);
                     //  finish();
                 } else if (response.code() == 422) {
-                    Log.d("aaaaaaaaaa", "error body" + response.errorBody() + "");
                     Converter<ResponseBody, ErrorRegistrationResponse> converter = RestClient.getRetrofit().responseBodyConverter(ErrorRegistrationResponse.class, new Annotation[0]);
                     ErrorRegistrationResponse errorModel = null;
                     try {
@@ -114,7 +113,6 @@ public class LoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.et_email);
         etFirstName = findViewById(R.id.et_firstName);
         etLastName = findViewById(R.id.et_lastName);
-        // etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, SDKActivity.class);
                     ZipzApplication.getInstance().getmSessionManager().setIsLogin(true);
 
-                    getUserInfo();
+                    //getUserInfo();
                     startActivity(intent);
                     finish();
                 } else if (response.code() == 422) {
@@ -186,18 +184,17 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public static String getUsernameInfo() {
-        String fullName = ZipzApplication.getInstance().getmSessionManager().getUserName();
-        Log.d("username", "getUserInfo() called with: appUser = [" + fullName + "]");
-        //Toast.makeText(ZipzApplication.getInstance(), "" + fullName + "", Toast.LENGTH_SHORT).show();
-        return fullName;
-    }
-
-    public static AppUser getUserInfo() {
-        AppUser appUser = ZipzApplication.getInstance().getmSessionManager().getUser();
-        Log.d("user info", "getUserInfo() called with: appUser = [" + appUser + "]");
-        return appUser;
-    }
+//    public static String getUsernameInfo() {
+//        String fullName = ZipzApplication.getInstance().getmSessionManager().getUserName();
+//        Log.d("username", "getUserInfo() called with: appUser = [" + fullName + "]");
+//        return fullName;
+//    }
+//
+//    public static AppUser getUserInfo() {
+//        AppUser appUser = ZipzApplication.getInstance().getmSessionManager().getUser();
+//        Log.d("user info", "getUserInfo() called with: appUser = [" + appUser + "]");
+//        return appUser;
+//    }
 
     public static void sentExceptionServer() {
         String message = "Something went wrong";

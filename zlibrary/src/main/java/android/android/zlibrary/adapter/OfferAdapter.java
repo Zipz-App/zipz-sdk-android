@@ -63,7 +63,6 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
             this.tvOfferRegularPrice = itemView.findViewById(R.id.tvOfferRegularPrice);
             this.tvOfferPrice = itemView.findViewById(R.id.tvOfferPrice);
             this.tvOfferDiscount = itemView.findViewById(R.id.tvOfferDiscount);
-            //this.llItem = itemView.findViewById(R.id.linearLayout);
 
         }
     }

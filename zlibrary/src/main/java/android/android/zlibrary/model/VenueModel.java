@@ -1,6 +1,9 @@
 package android.android.zlibrary.model;
 
 public class VenueModel {
+
+    //demo test
+
     private long place_id;
     private String place_name;
     private String place_category_name;

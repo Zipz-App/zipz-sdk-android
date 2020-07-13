@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class VenuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    //demo adapter
     private List<VenueListModel> dataSet;
     private Context context;
     private Drawable favorite_drawable;
