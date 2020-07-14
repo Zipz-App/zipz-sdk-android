@@ -1,6 +1,7 @@
 package android.android.zlibrary.retrofit;
 
 import android.android.zlibrary.model.AdverIdResponse;
+import android.android.zlibrary.model.offerdetails_response.OfferDetailsResponse;
 import android.android.zlibrary.model.init_response.InitResponse;
 import android.android.zlibrary.model.registration_response.RegistrationResponse;
 import android.android.zlibrary.model.venue_response.VenuesResponse;
@@ -36,5 +37,8 @@ public interface ApiInterface {
 
     @POST(Constants.VENUES_DETAILS)
     Call<VenuesDetailsResponse> venueDetails(@Body JsonObject jsonObject);
+
+    @POST(Constants.OFFER_DETAILS)
+    Call<OfferDetailsResponse> offerDetails(@Body JsonObject jsonObject);
 }
 

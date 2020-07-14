@@ -1,6 +1,7 @@
 package android.android.zlibrary.database;
 
 import android.android.zlibrary.app.ZipzApplication;
+import android.android.zlibrary.model.offerdetails_response.Offer;
 import android.android.zlibrary.model.registration_response.AppUser;
 import android.android.zlibrary.model.venuecluster_response.VenueCluster;
 import android.android.zlibrary.model.venueclusterdetails_response.Venue;
@@ -34,9 +35,14 @@ public class LocalStore {
     private static final String KEY_VENUE = "venue";
     private static final String KEY_REQUEST_CODE = "requestCode";
     private static final String KEY_MESSAGE = "message";
+    private static final String KEY_REQUEST_CODE_VENUE_DETAILS = "requestCodeVenueDetails";
+    private static final String KEY_MESSAGE_VENUE_DETAILS = "messageVenueDetails";
+    private static final String KEY_VENUE_OBJECT = "venueObject";
     private static final String KEY_PRIVATE_OFFER = "privateoffer";
     private static final String KEY_PUBLIC_OFFER = "publicoffer";
-
+    private static final String KEY_REQUEST_CODE_OFFER = "requestCodeOffer";
+    private static final String KEY_MESSAGE_OFFER = "messageOffer";
+    private static final String KEY_OFFER = "offer";
 
     public LocalStore(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, 0);
@@ -150,7 +156,7 @@ public class LocalStore {
     public List<PublicOffer> getPublicOfferList() {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(KEY_PUBLIC_OFFER, "");
-        Type type = new TypeToken<List<PrivateOffer>>() {
+        Type type = new TypeToken<List<PublicOffer>>() {
         }.getType();
         List<PublicOffer> publicOffers = gson.fromJson(json, type);
         return publicOffers;
@@ -214,12 +220,68 @@ public class LocalStore {
         editor.commit();
     }
 
+    public void saveMessageVenueDetails(int code, String message) {
+        editor.putInt(KEY_REQUEST_CODE_VENUE_DETAILS, code);
+        editor.putString(KEY_MESSAGE_VENUE_DETAILS, message);
+        editor.commit();
+    }
+
+    public void saveMessageOffer(int code, String message) {
+        editor.putInt(KEY_REQUEST_CODE_OFFER, code);
+        editor.putString(KEY_MESSAGE_OFFER, message);
+        editor.commit();
+    }
+
     public String getMessage() {
         return sharedPreferences.getString(KEY_MESSAGE, "");
+    }
+
+    public String getMessageVenueDetails() {
+        return sharedPreferences.getString(KEY_MESSAGE_VENUE_DETAILS, "");
+    }
+
+    public String getMessageOffer() {
+        return sharedPreferences.getString(KEY_MESSAGE_OFFER, "");
     }
 
     public int getRequestCode() {
         return sharedPreferences.getInt(KEY_REQUEST_CODE, 0);
     }
 
+    public int getRequestCodeVenueDetails() {
+        return sharedPreferences.getInt(KEY_REQUEST_CODE_VENUE_DETAILS, 0);
+    }
+
+
+    public int getRequestCodeOffer() {
+        return sharedPreferences.getInt(KEY_REQUEST_CODE_OFFER, 0);
+    }
+
+    public void insertOffer(Offer offer) {
+        Gson gson = new Gson();
+        String offerJson = gson.toJson(offer);
+        editor.putString(KEY_OFFER, offerJson);
+        editor.apply();
+    }
+
+    public Offer getOffer() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_OFFER, "");
+        return gson.fromJson(json, Offer.class);
+
+    }
+
+    public void insertVenue(Venue venue) {
+        Gson gson = new Gson();
+        String venueJson = gson.toJson(venue);
+        editor.putString(KEY_VENUE_OBJECT, venueJson);
+        editor.apply();
+    }
+
+    public Venue getVenue() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_VENUE_OBJECT, "");
+        return gson.fromJson(json, Venue.class);
+
+    }
 }

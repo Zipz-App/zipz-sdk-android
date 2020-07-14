@@ -10,6 +10,7 @@ import android.android.zlibrary.model.venuedetails_response.VenueDResponse;
 import android.android.zlibrary.model.venuedetails_response.VenuesDetailsResponse;
 import android.android.zlibrary.retrofit.RestClient;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,7 @@ public class VenueDetailsFragment extends Fragment {
     private TextView tvToolbarTitle;
     private TextView tvVenueName, tvVenueAddress;
 
+    private List<PublicOffer> publicOffers;
 
     public static VenueDetailsFragment newInstance(String uuid, String venueType,
                                                    String venueName, String venueAddress, String venueImage) {
@@ -88,8 +90,16 @@ public class VenueDetailsFragment extends Fragment {
         });
 
         getVenueDetails(uuid);
-        String message = errorMessage;
-        Log.d("test", "onCreateView() " + message);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                populateLists();
+                String message = checkMessage();
+                int code = checkRequestCode();
+            }
+        }, 1000);
+
         return root;
 
     }
@@ -111,42 +121,56 @@ public class VenueDetailsFragment extends Fragment {
                         VenueDResponse venueDResponse = response.body().getResponse();
                         if (venueDResponse != null) {
                             Venue venue = venueDResponse.getVenue();
+
+                            ZipzApplication.getInstance().getmSessionManager().insertVenue(venue);
+                            getVenue();
+
                             List<PrivateOffer> listOfPrivateOffers = venueDResponse.getOffers().getPrivateOffers();
                             List<PublicOffer> listOfPublicOffers = venueDResponse.getOffers().getPublicOffers();
 
-                            int privateOffer = listOfPrivateOffers.size();
-                            int publicOffer = listOfPublicOffers.size();
-                            if (publicOffer != 0) {
-                                venueDetailsCallback("Success.");
+                            int privateOfferSize = listOfPrivateOffers.size();
+                            int publicOfferSize = listOfPublicOffers.size();
+                            if (publicOfferSize != 0) {
                                 errorMessage = "Success.";
+                                ZipzApplication.getInstance().getmSessionManager().saveMessageVenueDetails(200, errorMessage);
+                                checkRequestCode();
+                                checkMessage();
                                 ZipzApplication.getInstance().getmSessionManager().insertPublicOfferList(listOfPublicOffers);
                                 getListOfPublicOffer();
                             } else {
                                 errorMessage = "The list of public offer is null.";
-                                venueDetailsCallback("The list of public offer is null.");
+                                ZipzApplication.getInstance().getmSessionManager().saveMessageVenueDetails(200, errorMessage);
+                                checkRequestCode();
+                                checkMessage();
                             }
-                            if (privateOffer != 0) {
-                                errorMessage = "Success.";
-                                venueDetailsCallback("Success.");
-                                getVenueDetailsCallback();
 
+                            if (privateOfferSize != 0) {
+                                errorMessage = "Success.";
+                                ZipzApplication.getInstance().getmSessionManager().saveMessageVenueDetails(200, errorMessage);
+                                checkRequestCode();
+                                checkMessage();
                                 ZipzApplication.getInstance().getmSessionManager().insertPrivateOfferList(listOfPrivateOffers);
                                 getListOfPrivateOffer();
                             } else {
-                                errorMessage= "The list of private offer is null.";
-                                venueDetailsCallback("The list of private offer is null.");
+                                errorMessage = "The list of private offer is null.";
+                                ZipzApplication.getInstance().getmSessionManager().saveMessageVenueDetails(200, errorMessage);
+                                checkRequestCode();
+                                checkMessage();
                             }
-                            Log.d("offer private", "onResponse() called with: call = [" + privateOffer + "]");
-                            Log.d("offer public", "onResponse() called with: call = [" + publicOffer + "]");
+
                         }
-                    } else if (response.code() == 422) {
-                        errorMessage= "The uuid field is required.";
-                        venueDetailsCallback("The uuid field is required.");
-                    } else if (response.code() == 500) {
-                        errorMessage = "Something went wrong.";
-                        venueDetailsCallback("Something went wrong.");
                     }
 
+                } else if (response.code() == 422) {
+                    errorMessage = "The uuid field is required.";
+                    ZipzApplication.getInstance().getmSessionManager().saveMessageVenueDetails(422, errorMessage);
+                    checkRequestCode();
+                    checkMessage();
+                } else if (response.code() == 500) {
+                    errorMessage = "Something went wrong.";
+                    ZipzApplication.getInstance().getmSessionManager().saveMessageVenueDetails(500, errorMessage);
+                    checkRequestCode();
+                    checkMessage();
                 }
             }
 
@@ -157,33 +181,35 @@ public class VenueDetailsFragment extends Fragment {
         });
     }
 
+    public static Venue getVenue() {
+        return ZipzApplication.getInstance().getmSessionManager().getVenue();
+    }
+
     public static List<PrivateOffer> getListOfPrivateOffer() {
         return ZipzApplication.getInstance().getmSessionManager().getPrivateOfferList();
     }
 
     public static List<PublicOffer> getListOfPublicOffer() {
-        int size = ZipzApplication.getInstance().getmSessionManager().getPublicOfferList().size();
         return ZipzApplication.getInstance().getmSessionManager().getPublicOfferList();
     }
 
-    public static String venueDetailsCallback(String message) {
-        errorMessage = message;
-        return message;
-    }
-
-    public static String getVenueDetailsCallback() {
-        return errorMessage;
-    }
-
-
-    private void populateLists(List<PublicOffer> privateOffers) {
-        if (privateOffers != null && privateOffers.size() != 0) {
-            OfferAdapter adapter = new OfferAdapter(privateOffers);
+    private void populateLists() {
+        publicOffers = getListOfPublicOffer();
+        if (publicOffers != null && publicOffers.size() != 0) {
+            OfferAdapter adapter = new OfferAdapter(publicOffers);
             rvOffers.setHasFixedSize(true);
             LinearLayoutManager layoutManager
                     = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             rvOffers.setLayoutManager(layoutManager);
             rvOffers.setAdapter(adapter);
         }
+    }
+
+    public static int checkRequestCode() {
+        return ZipzApplication.getInstance().getmSessionManager().getRequestCodeVenueDetails();
+    }
+
+    public static String checkMessage() {
+        return ZipzApplication.getInstance().getmSessionManager().getMessageVenueDetails();
     }
 }
