@@ -230,7 +230,7 @@ public class Cluster extends Fragment {
         });
     }
 
-    public static void venueClusters() {
+    public static void venueClusterList() {
         JsonObject jsonObject = new JsonObject();
         Call<VenueCLustersResponse> initCall = RestClient.getInstance().service.venueClusters(jsonObject);
         initCall.enqueue(new Callback<VenueCLustersResponse>() {

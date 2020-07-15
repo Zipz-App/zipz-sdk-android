@@ -85,7 +85,7 @@ public class VenueClusterDetailsFragment extends Fragment {
 
 
         getVCDetails(uuid);
-        getVenueClustersDetails(uuid);
+        getVenueClusterDetails(uuid);
 
 
 //        for test
@@ -161,7 +161,7 @@ public class VenueClusterDetailsFragment extends Fragment {
         return errorMessage;
     }
 
-    public static void getVenueClustersDetails(String uuid) {
+    public static void getVenueClusterDetails(String uuid) {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("uuid", uuid);
         if (uuid != null) {
