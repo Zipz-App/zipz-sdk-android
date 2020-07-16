@@ -33,9 +33,6 @@ public class Venue {
     @SerializedName("neighborhood")
     @Expose
     private String neighborhood;
-    @SerializedName("city_neighborhood")
-    @Expose
-    private Object cityNeighborhood;
     @SerializedName("city")
     @Expose
     private City city;
@@ -121,13 +118,6 @@ public class Venue {
         this.neighborhood = neighborhood;
     }
 
-    public Object getCityNeighborhood() {
-        return cityNeighborhood;
-    }
-
-    public void setCityNeighborhood(Object cityNeighborhood) {
-        this.cityNeighborhood = cityNeighborhood;
-    }
 
     public City getCity() {
         return city;

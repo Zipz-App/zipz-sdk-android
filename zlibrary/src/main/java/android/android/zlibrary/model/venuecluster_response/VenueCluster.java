@@ -34,9 +34,9 @@ public class VenueCluster implements Parcelable {
     @SerializedName("longitude")
     @Expose
     private String longitude;
-    @SerializedName("city_neighborhood")
+    @SerializedName("neighborhood")
     @Expose
-    private String cityNeighborhood;
+    private String neighborhood;
     @SerializedName("order")
     @Expose
     private Object order;
@@ -51,7 +51,7 @@ public class VenueCluster implements Parcelable {
         image = in.readString();
         latitude = in.readString();
         longitude = in.readString();
-        cityNeighborhood = in.readString();
+        neighborhood = in.readString();
     }
 
     public static final Creator<VenueCluster> CREATOR = new Creator<VenueCluster>() {
@@ -138,12 +138,12 @@ public class VenueCluster implements Parcelable {
         this.longitude = longitude;
     }
 
-    public String getCityNeighborhood() {
-        return cityNeighborhood;
+    public String getNeighborhood() {
+        return neighborhood;
     }
 
-    public void setCityNeighborhood(String cityNeighborhood) {
-        this.cityNeighborhood = cityNeighborhood;
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
     }
 
     public Object getOrder() {
@@ -170,6 +170,6 @@ public class VenueCluster implements Parcelable {
         dest.writeString(image);
         dest.writeString(latitude);
         dest.writeString(longitude);
-        dest.writeString(cityNeighborhood);
+        dest.writeString(neighborhood);
     }
 }
