@@ -3,6 +3,7 @@ package android.android.zlibrary.activities;
 import android.android.zlibrary.R;
 import android.android.zlibrary.app.ZipzApplication;
 import android.android.zlibrary.model.registration_response.AppUser;
+import android.android.zlibrary.model.error_response.ErrorMessage;
 import android.android.zlibrary.model.registration_response.ErrorRegistrationResponse;
 import android.android.zlibrary.model.registration_response.RegistrationResponse;
 import android.android.zlibrary.retrofit.RestClient;
@@ -66,7 +67,9 @@ public class LoginActivity extends AppCompatActivity {
                     AppUser appUser = response.body().getResponse().getAppUser();
                     ZipzApplication.getInstance().getmSessionManager().insertUser(appUser);
                     //getUsernameInfo();
-                    ZipzApplication.getInstance().getmSessionManager().saveMesssage(200,"Success");
+                    //ZipzApplication.getInstance().getmSessionManager().saveMesssage(200,"Success");
+                    ErrorMessage errorMessage = response.body().getStatus().getError();
+                    ZipzApplication.getInstance().getmSessionManager().saveMesssage(response.code(),errorMessage);
                     checkRequestCode();
                     checkMessage();
                     //  startActivity(intent);
@@ -78,16 +81,18 @@ public class LoginActivity extends AppCompatActivity {
                         assert response.errorBody() != null;
                         errorModel = converter.convert(response.errorBody());
                         assert errorModel != null;
-                        String message = errorModel.getStatus().getError().getEmail().get(0);
-                        ZipzApplication.getInstance().getmSessionManager().saveMesssage(response.code(),message);
-                        checkRequestCode();
-                        checkMessage();
+                        //String message = errorModel.getStatus().getError().getErrorField().get(0);
+                        //ErrorMessage errorMessage = response.body().getStatus().getError();
+                        //ZipzApplication.getInstance().getmSessionManager().saveMesssage(response.code(),errorMessage);
+                        //checkRequestCode();
+                        //checkMessage();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
 
-                    ZipzApplication.getInstance().getmSessionManager().saveMesssage(response.code(),"Something went wrong");
+                    ErrorMessage errorMessage = response.body().getStatus().getError();
+                    ZipzApplication.getInstance().getmSessionManager().saveMesssage(response.code(),errorMessage);
                     checkRequestCode();
                     checkMessage();
                 }
@@ -103,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
     public static int checkRequestCode() {
         return ZipzApplication.getInstance().getmSessionManager().getRequestCode();
     }
-    public static String checkMessage() {
+    public static ErrorMessage checkMessage() {
         return ZipzApplication.getInstance().getmSessionManager().getMessage();
     }
 
@@ -168,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
                         assert response.errorBody() != null;
                         errorModel = converter.convert(response.errorBody());
                         assert errorModel != null;
-                        String message = errorModel.getStatus().getError().getEmail().get(0);
+                        String message = errorModel.getStatus().getError().getErrorField().get(0);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

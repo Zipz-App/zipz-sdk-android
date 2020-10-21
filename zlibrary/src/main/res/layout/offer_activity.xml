@@ -120,16 +120,16 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnOpenDeatils"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearanceExtraExtraSmall"
-            android:textColor="@color/colorTextSecondary" />
-
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnReserveOffer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="Reserve Offer"
+        android:textAppearance="@style/TextAppearanceExtraExtraSmall"
+        android:textColor="@color/colorTextSecondary" />
 </LinearLayout>

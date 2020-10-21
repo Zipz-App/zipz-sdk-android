@@ -3,6 +3,8 @@ package android.android.zlibrary.fragments;
 import android.android.zlibrary.R;
 import android.android.zlibrary.adapter.OfferAdapter;
 import android.android.zlibrary.app.ZipzApplication;
+import android.android.zlibrary.model.error_response.ErrorMessage;
+import android.android.zlibrary.model.error_response.ErrorResponse;
 import android.android.zlibrary.model.venueclusterdetails_response.Venue;
 import android.android.zlibrary.model.venuedetails_response.PrivateOffer;
 import android.android.zlibrary.model.venuedetails_response.PublicOffer;
@@ -23,10 +25,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -68,7 +73,7 @@ public class VenueDetailsFragment extends Fragment {
         String name = getArguments().getString(ARGUMENT_VENUE_NAME);
         String address = getArguments().getString(ARGUMENT_VENUE_ADDRESS);
         String imageUrl = getArguments().getString(ARGUMENT_VENUE_IMAGE);
-
+        publicOffers = new ArrayList<>();
         tvToolbarTitle = root.findViewById(R.id.tvToolbarTitle);
         rvOffers = root.findViewById(R.id.rvOffers);
         ivBack = root.findViewById(R.id.ivBack);
@@ -100,6 +105,7 @@ public class VenueDetailsFragment extends Fragment {
             }
         }, 1000);
 
+
         return root;
 
     }
@@ -119,6 +125,9 @@ public class VenueDetailsFragment extends Fragment {
 
                     if (venueDetailsResponse.getStatus().getSuccess()) {
                         VenueDResponse venueDResponse = response.body().getResponse();
+                        Gson gson = new Gson();
+                        String str = gson.toJson(response.body().getResponse().getOffers().getPublicOffers());
+                          Log.e("asdzxc", "ima" + str);
                         if (venueDResponse != null) {
                             Venue venue = venueDResponse.getVenue();
 
@@ -161,16 +170,17 @@ public class VenueDetailsFragment extends Fragment {
                         }
                     }
 
-                } else if (response.code() == 422) {
-                    errorMessage = "The uuid field is required.";
-                    ZipzApplication.getInstance().getmSessionManager().saveMessageVenueDetails(422, errorMessage);
-                    checkRequestCode();
-                    checkMessage();
-                } else if (response.code() == 500) {
-                    errorMessage = "Something went wrong.";
-                    ZipzApplication.getInstance().getmSessionManager().saveMessageVenueDetails(500, errorMessage);
-                    checkRequestCode();
-                    checkMessage();
+                } else {
+                    if (!response.isSuccessful() && response.code() != HttpURLConnection.HTTP_OK)
+                    {
+                        Gson gson = new Gson();
+                        try {
+                            ErrorResponse errorResponse = gson.fromJson(response.errorBody().string(), ErrorResponse.class);
+                            ZipzApplication.getInstance().getmSessionManager().saveMessageErrorVenueDetails(errorResponse);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
 
@@ -181,6 +191,9 @@ public class VenueDetailsFragment extends Fragment {
         });
     }
 
+    public static ErrorResponse getMessageErrorVenueDetails() {
+        return ZipzApplication.getInstance().getmSessionManager().getMessageErrorVenueDetails();
+    }
     public static Venue getVenue() {
         return ZipzApplication.getInstance().getmSessionManager().getVenue();
     }

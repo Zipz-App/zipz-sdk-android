@@ -1,4 +1,4 @@
-package android.android.zlibrary.model.registration_response;
+package android.android.zlibrary.model.error_response;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,12 +10,12 @@ import java.util.List;
 
 public class ErrorMessage implements Parcelable {
 
-    @SerializedName("email")
+    @SerializedName("message")
     @Expose
-    private List<String> email = null;
+    private List<String> errorField = null;
 
     protected ErrorMessage(Parcel in) {
-        email = in.createStringArrayList();
+        errorField = in.createStringArrayList();
     }
 
     public static final Creator<ErrorMessage> CREATOR = new Creator<ErrorMessage>() {
@@ -30,12 +30,12 @@ public class ErrorMessage implements Parcelable {
         }
     };
 
-    public List<String> getEmail() {
-        return email;
+    public List<String> getErrorField() {
+        return errorField;
     }
 
-    public void setEmail(List<String> email) {
-        this.email = email;
+    public void setErrorField(List<String> errorField) {
+        this.errorField = errorField;
     }
 
     @Override
@@ -45,6 +45,6 @@ public class ErrorMessage implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringList(email);
+        dest.writeStringList(errorField);
     }
 }

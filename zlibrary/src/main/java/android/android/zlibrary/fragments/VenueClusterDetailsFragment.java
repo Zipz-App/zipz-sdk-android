@@ -3,6 +3,8 @@ package android.android.zlibrary.fragments;
 import android.android.zlibrary.R;
 import android.android.zlibrary.adapter.VenueAdapter;
 import android.android.zlibrary.app.ZipzApplication;
+import android.android.zlibrary.model.error_response.ErrorMessage;
+import android.android.zlibrary.model.error_response.ErrorResponse;
 import android.android.zlibrary.model.venueclusterdetails_response.Venue;
 import android.android.zlibrary.model.venueclusterdetails_response.VenueClusterDetailsResponse;
 import android.android.zlibrary.retrofit.RestClient;
@@ -19,9 +21,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.List;
 
@@ -87,17 +91,6 @@ public class VenueClusterDetailsFragment extends Fragment {
         getVCDetails(uuid);
         getVenueClusterDetails(uuid);
 
-
-//        for test
-//        List<Venue> list = getVenueClustersListDetails(uuid);
-//        if (list.size() != 0) {
-//            Log.d("size", "onCreateView() called with: inflater = [" + list.size() + "]");
-//        }
-//
-//        String message = getVenueClusterDetailsCallback();
-//        Log.d("test", "onCreateView() " + message);
-
-
         return root;
 
     }
@@ -133,12 +126,11 @@ public class VenueClusterDetailsFragment extends Fragment {
                             venueClusterDetailsCallback("The uuid field is required.");
                         }
 
-                    } else {
-                        if (response.code() == 500) {
-                            venueClusterDetailsCallback("Something went wrong");
-                        }
                     }
-                    getVenueClusterDetailsCallback();
+                    else {
+                        ErrorMessage errorMessage = response.body().getStatus().getError();
+                        ZipzApplication.getInstance().getmSessionManager().saveMesssage(response.code(),errorMessage);
+                    }
                 }
 
                 @Override
@@ -156,7 +148,9 @@ public class VenueClusterDetailsFragment extends Fragment {
         errorMessage = message;
         return message;
     }
-
+    public static ErrorResponse getMessageErrorVenueClusterDetails() {
+        return ZipzApplication.getInstance().getmSessionManager().getMessageErrorVenueClusterDetails();
+    }
     public static String getVenueClusterDetailsCallback() {
         return errorMessage;
     }
@@ -189,12 +183,20 @@ public class VenueClusterDetailsFragment extends Fragment {
                             }
                         } else if (venueClusterDetailsResponse.getStatus().getStatusCode() == 422) {
                             venueClusterDetailsCallback("The uuid field is required.");
+                        } else {
+                            if (!response.isSuccessful() && response.code() != HttpURLConnection.HTTP_OK)
+                            {
+                                Gson gson = new Gson();
+                                try {
+                                    ErrorResponse errorResponse = gson.fromJson(response.errorBody().string(), ErrorResponse.class);
+                                    ZipzApplication.getInstance().getmSessionManager().saveMessageErrorVenueClusterDetails(errorResponse);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
                         }
 
-                    } else {
-                        if (response.code() == 500) {
-                            venueClusterDetailsCallback("Something went wrong");
-                        }
                     }
                 }
 

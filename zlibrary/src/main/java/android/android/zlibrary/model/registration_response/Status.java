@@ -1,5 +1,6 @@
 package android.android.zlibrary.model.registration_response;
 
+import android.android.zlibrary.model.error_response.ErrorMessage;
 import android.os.Parcel;
 import android.os.Parcelable;
 

@@ -7,21 +7,9 @@
     android:focusable="true">
 
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
-        android:id="@+id/barcode_scanner"
+        android:id="@+id/barcodeScanner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true" />
 
-    <TextView
-        android:id="@+id/txtCameraLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spaceMedium"
-        android:background="@color/colorBackgroundItem"
-        android:gravity="center_horizontal"
-        android:padding="@dimen/spaceLarge"
-        android:text="@string/CameraScanQRCodeLabel"
-        android:textAppearance="@style/TextAppearanceMediumSmall"
-        android:textColor="@color/colorAppPrimary"
-        android:textStyle="bold" />
 </RelativeLayout>

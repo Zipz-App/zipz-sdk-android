@@ -2,9 +2,14 @@ package android.android.zlibrary.activities;
 
 import android.android.zlibrary.R;
 import android.android.zlibrary.app.ZipzApplication;
+import android.android.zlibrary.fragments.CameraFragment;
+import android.android.zlibrary.fragments.RedeemFragment;
+import android.android.zlibrary.fragments.TransactionFragment;
 import android.android.zlibrary.help.AppStartModel;
 import android.android.zlibrary.help.LogManager;
 import android.android.zlibrary.model.init_response.InitResponse;
+import android.android.zlibrary.model.error_response.ErrorMessage;
+import android.android.zlibrary.model.reserve_offer_response.ReserveOffer;
 import android.android.zlibrary.retrofit.RestClient;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -15,6 +20,8 @@ import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,6 +62,7 @@ public class SDKActivity extends AppCompatActivity implements NavigationView.OnN
     public static double latitudeValue, longitudeValue;
     private FusedLocationProviderClient client;
     public static String name;
+    private Button btnTransaction, btnRedeemTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,8 @@ public class SDKActivity extends AppCompatActivity implements NavigationView.OnN
         setContentView(R.layout.activity_zmain);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        btnTransaction = findViewById(R.id.btnTransaction);
+        btnRedeemTransaction = findViewById(R.id.btnRedeem);
         init();
         requestPermission();
 
@@ -83,6 +93,7 @@ public class SDKActivity extends AppCompatActivity implements NavigationView.OnN
                 }
             }
         });
+
     }
 
     public static void initReq(String appid, String appSecret, String uuid) {
@@ -117,7 +128,10 @@ public class SDKActivity extends AppCompatActivity implements NavigationView.OnN
                         ZipzApplication.getInstance().getmSessionManager().setToken(token);
 //                        getUserToken();
                     }
-
+                }
+                else {
+                    ErrorMessage errorMessage = response.body().getStatus().getError();
+                    ZipzApplication.getInstance().getmSessionManager().saveMesssage(response.code(),errorMessage);
                 }
             }
 
@@ -224,3 +238,4 @@ public class SDKActivity extends AppCompatActivity implements NavigationView.OnN
     }
 
 }
+

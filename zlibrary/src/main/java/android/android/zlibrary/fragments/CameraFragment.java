@@ -2,6 +2,7 @@ package android.android.zlibrary.fragments;
 
 import android.Manifest;
 import android.android.zlibrary.R;
+import android.android.zlibrary.app.ZipzApplication;
 import android.android.zlibrary.help.BarCodeScanInterface;
 import android.content.Context;
 import android.content.Intent;
@@ -61,7 +62,10 @@ public class CameraFragment extends Fragment {
                 }
                 if (barCodeScanInterface != null) {
                     barCodeScanInterface.onQRCodeFound(lastCode);
+
                 }
+                ZipzApplication.getInstance().getmSessionManager().insertQRCode(lastCode);
+                removeCameraFragment();
             }
         }
 
@@ -89,7 +93,7 @@ public class CameraFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        barcodeView = view.findViewById(R.id.barcode_scanner);
+        barcodeView = view.findViewById(R.id.barcodeScanner);
 
         Collection<BarcodeFormat> formats = Collections.singletonList(BarcodeFormat.QR_CODE);
         barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
@@ -143,5 +147,14 @@ public class CameraFragment extends Fragment {
     public void onPause() {
         super.onPause();
         barcodeView.pause();
+    }
+
+
+    private void removeCameraFragment() {
+        try {
+
+            getActivity().getSupportFragmentManager().popBackStack();
+        } catch (Exception e) {
+        }
     }
 }

@@ -1,8 +1,13 @@
 package android.android.zlibrary.database;
 
 import android.android.zlibrary.app.ZipzApplication;
+import android.android.zlibrary.model.error_response.ErrorResponse;
 import android.android.zlibrary.model.offerdetails_response.Offer;
+import android.android.zlibrary.model.redeem_transaction.RedeemTransaction;
 import android.android.zlibrary.model.registration_response.AppUser;
+import android.android.zlibrary.model.error_response.ErrorMessage;
+import android.android.zlibrary.model.reserve_offer_response.ReserveOffer;
+import android.android.zlibrary.model.transactions_response.Transaction;
 import android.android.zlibrary.model.venuecluster_response.VenueCluster;
 import android.android.zlibrary.model.venueclusterdetails_response.Venue;
 import android.android.zlibrary.model.venuedetails_response.PrivateOffer;
@@ -43,6 +48,19 @@ public class LocalStore {
     private static final String KEY_REQUEST_CODE_OFFER = "requestCodeOffer";
     private static final String KEY_MESSAGE_OFFER = "messageOffer";
     private static final String KEY_OFFER = "offer";
+    private static final String KEY_TRANSACTIONS = "transactions";
+    private static final String KEY_RESERVED_OFFER = "reserve_offer";
+    private static final String KEY_QR_CODE = "qr_code";
+    private static final String KEY_REDEEM_TRANSACTION = "redeem_transaction";
+    private static final String KEY_ERROR_VENUE_CLUSTER = "error_venue_cluster";
+    private static final String KEY_ERROR_VENUE_CLUSTER_DETAILS = "error_venue_cluster_details";
+    private static final String KEY_ERROR_VENUE = "error_venue";
+    private static final String KEY_ERROR_VENUE_DETAILS = "error_venue_details";
+    private static final String KEY_ERROR_TRANSACTIONS = "error_transactions";
+    private static final String KEY_ERROR_RESERVED_OFFER = "error_reserved_offer";
+    private static final String KEY_ERROR_REDEEM_TRANSACTION = "error_redeem_transaction";
+    private static final String KEY_ERROR_OFFER = "error_offer";
+    private static final String KEY_ERROR_OFFER_DETAILS = "error_offer_details";
 
     public LocalStore(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, 0);
@@ -170,6 +188,7 @@ public class LocalStore {
         Log.d("token", "setIsLogin() called with: isLogin = [" + isLogin + "]");
         editor.putBoolean(IS_LOGIN, isLogin);
         editor.commit();
+
     }
 
     public void saveUser(AppUser user) {
@@ -214,9 +233,11 @@ public class LocalStore {
         return sharedPreferences.getString(KEY_USERNAME, "");
     }
 
-    public void saveMesssage(int code, String message) {
+    public void saveMesssage(int code, ErrorMessage message) {
+        Gson gson = new Gson();
+        String errorJson = gson.toJson(message);
+        editor.putString(KEY_MESSAGE, errorJson);
         editor.putInt(KEY_REQUEST_CODE, code);
-        editor.putString(KEY_MESSAGE, message);
         editor.commit();
     }
 
@@ -232,8 +253,10 @@ public class LocalStore {
         editor.commit();
     }
 
-    public String getMessage() {
-        return sharedPreferences.getString(KEY_MESSAGE, "");
+    public ErrorMessage getMessage() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_MESSAGE, "");
+        return gson.fromJson(json, ErrorMessage.class);
     }
 
     public String getMessageVenueDetails() {
@@ -268,8 +291,21 @@ public class LocalStore {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(KEY_OFFER, "");
         return gson.fromJson(json, Offer.class);
-
     }
+
+    public void insertReservedOffer(ReserveOffer reserveOffer) {
+        Gson gson = new Gson();
+        String reservedOffer = gson.toJson(reserveOffer);
+        editor.putString(KEY_RESERVED_OFFER, reservedOffer);
+        editor.apply();
+    }
+
+    public ReserveOffer getReservedOffer() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_RESERVED_OFFER, "");
+        return gson.fromJson(json, ReserveOffer.class);
+    }
+
 
     public void insertVenue(Venue venue) {
         Gson gson = new Gson();
@@ -283,5 +319,150 @@ public class LocalStore {
         String json = sharedPreferences.getString(KEY_VENUE_OBJECT, "");
         return gson.fromJson(json, Venue.class);
 
+    }
+
+    public void insertTransaction(List<Transaction> transaction) {
+        Gson gson = new Gson();
+        String jsonTransaction = gson.toJson(transaction);
+        editor.putString(KEY_TRANSACTIONS, jsonTransaction);
+        editor.apply();
+    }
+
+    public List<Transaction> getTransactionList() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_TRANSACTIONS, "");
+        Type type = new TypeToken<List<Transaction>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public void insertQRCode(String qrCode) {
+        editor.putString(KEY_QR_CODE, qrCode);
+        editor.apply();
+    }
+
+    public String getQRCode() {
+        return sharedPreferences.getString(KEY_QR_CODE, "").replaceAll("^\"|\"$", "");
+    }
+
+    public void insertRedeemTransaction(RedeemTransaction redeemTransaction) {
+        Gson gson = new Gson();
+        String jsonRedeem = gson.toJson(redeemTransaction);
+        editor.putString(KEY_REDEEM_TRANSACTION, jsonRedeem);
+        editor.apply();
+    }
+
+    public RedeemTransaction getRedeemTransaction() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_REDEEM_TRANSACTION, "");
+        return gson.fromJson(json, RedeemTransaction.class);
+    }
+
+    public void saveMessageErrorVenueCluster(ErrorResponse message) {
+        Gson gson = new Gson();
+        String errorJson = gson.toJson(message);
+        editor.putString(KEY_ERROR_VENUE_CLUSTER, errorJson);
+        editor.commit();
+    }
+    public ErrorResponse getMessageErrorVenueCluster() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_ERROR_VENUE_CLUSTER, "");
+        return gson.fromJson(json, ErrorResponse.class);
+    }
+
+    public void saveMessageErrorVenueClusterDetails(ErrorResponse message) {
+        Gson gson = new Gson();
+        String errorJson = gson.toJson(message);
+        editor.putString(KEY_ERROR_VENUE_CLUSTER_DETAILS, errorJson);
+        editor.commit();
+    }
+    public ErrorResponse getMessageErrorVenueClusterDetails() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_ERROR_VENUE_CLUSTER_DETAILS, "");
+        return gson.fromJson(json, ErrorResponse.class);
+    }
+
+    public void saveMessageErrorVenue(ErrorResponse message) {
+        Gson gson = new Gson();
+        String errorJson = gson.toJson(message);
+        editor.putString(KEY_ERROR_VENUE, errorJson);
+        editor.commit();
+    }
+    public ErrorResponse getMessageErrorVenue() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_ERROR_VENUE, "");
+        return gson.fromJson(json, ErrorResponse.class);
+    }
+
+    public void saveMessageErrorTransactions(ErrorResponse message) {
+        Gson gson = new Gson();
+        String errorJson = gson.toJson(message);
+        editor.putString(KEY_ERROR_TRANSACTIONS, errorJson);
+        editor.commit();
+    }
+    public ErrorResponse getMessageErrorTransactions() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_ERROR_TRANSACTIONS, "");
+        return gson.fromJson(json, ErrorResponse.class);
+    }
+
+    public void saveMessageErrorReservedOffer(ErrorResponse message) {
+        Gson gson = new Gson();
+        String errorJson = gson.toJson(message);
+        editor.putString(KEY_ERROR_RESERVED_OFFER, errorJson);
+        editor.commit();
+    }
+    public ErrorResponse getMessageErrorReservedOffer() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_ERROR_RESERVED_OFFER, "");
+        return gson.fromJson(json, ErrorResponse.class);
+    }
+
+    public void saveMessageErrorRedeemOffer(ErrorResponse message) {
+        Gson gson = new Gson();
+        String errorJson = gson.toJson(message);
+        editor.putString(KEY_ERROR_REDEEM_TRANSACTION, errorJson);
+        editor.commit();
+    }
+    public ErrorResponse getMessageErrorRedeemOffer() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_ERROR_REDEEM_TRANSACTION, "");
+        return gson.fromJson(json, ErrorResponse.class);
+    }
+
+    public void saveMessageErrorOfferDetails(ErrorResponse message) {
+        Gson gson = new Gson();
+        String errorJson = gson.toJson(message);
+        editor.putString(KEY_ERROR_OFFER_DETAILS, errorJson);
+        editor.commit();
+    }
+    public ErrorResponse getMessageErrorOfferDetails() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_ERROR_OFFER_DETAILS, "");
+        return gson.fromJson(json, ErrorResponse.class);
+    }
+
+    public void saveMessageErrorOffer(ErrorResponse message) {
+        Gson gson = new Gson();
+        String errorJson = gson.toJson(message);
+        editor.putString(KEY_ERROR_OFFER, errorJson);
+        editor.commit();
+    }
+    public ErrorResponse getMessageErrorOffer() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_ERROR_OFFER, "");
+        return gson.fromJson(json, ErrorResponse.class);
+    }
+
+    public void saveMessageErrorVenueDetails(ErrorResponse message) {
+        Gson gson = new Gson();
+        String errorJson = gson.toJson(message);
+        editor.putString(KEY_ERROR_VENUE_DETAILS, errorJson);
+        editor.commit();
+    }
+    public ErrorResponse getMessageErrorVenueDetails() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(KEY_ERROR_VENUE_DETAILS, "");
+        return gson.fromJson(json, ErrorResponse.class);
     }
 }

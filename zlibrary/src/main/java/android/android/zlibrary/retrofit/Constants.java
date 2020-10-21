@@ -12,4 +12,7 @@ public class Constants {
     public static final String VENUES = "venues";
     public static final String VENUES_DETAILS = "venue_details";
     public static final String OFFER_DETAILS = "offer_details";
+    public static final String RESERVE_OFFER = "reserve_offer";
+    public static final String TRANSACTIONS = "transactions";
+    public static final String REDEEM_TRANSACTION = "redeem_transaction";
 }

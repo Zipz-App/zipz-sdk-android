@@ -5,6 +5,8 @@ import android.android.zlibrary.adapter.ShoppingAdapter;
 import android.android.zlibrary.adapter.VenueAdapter;
 import android.android.zlibrary.app.ZipzApplication;
 import android.android.zlibrary.help.SpaceItemDecoration;
+import android.android.zlibrary.model.error_response.ErrorMessage;
+import android.android.zlibrary.model.error_response.ErrorResponse;
 import android.android.zlibrary.model.venue_response.VenuesResponse;
 import android.android.zlibrary.model.venuecluster_response.VenueCLustersResponse;
 import android.android.zlibrary.model.venuecluster_response.VenueCluster;
@@ -24,8 +26,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +113,7 @@ public class Cluster extends Fragment {
                     }
 
                 }
+
             }
 
             @Override
@@ -155,7 +160,20 @@ public class Cluster extends Fragment {
                     ZipzApplication.getInstance().getmSessionManager().insertVenues(venues);
                     getVenuesList();
                 }
+                else {
+                    if (!response.isSuccessful() && response.code() != HttpURLConnection.HTTP_OK)
+                    {
+                        Gson gson = new Gson();
+                        try {
+                            ErrorResponse errorResponse = gson.fromJson(response.errorBody().string(), ErrorResponse.class);
+                            ZipzApplication.getInstance().getmSessionManager().saveMessageErrorVenue(errorResponse);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
+
 
             @Override
             public void onFailure(Call<VenuesResponse> call, Throwable t) {
@@ -165,7 +183,9 @@ public class Cluster extends Fragment {
 
 
     }
-
+    public static ErrorResponse getMessageErrorVenue() {
+        return ZipzApplication.getInstance().getmSessionManager().getMessageErrorVenue();
+    }
     public static List<Venue> getVenuesList() {
         return ZipzApplication.getInstance().getmSessionManager().getVenuesList();
     }
@@ -202,11 +222,11 @@ public class Cluster extends Fragment {
                                 String type = venueClusterList.get(i).getType();
                                 if (type.equals("shopping")) {
                                     shoppingList.add(venueClusterList.get(i));
-                                } else if (type.equals("categories")) {
+                                } else if (type.equals("category")) {
                                     categoriesList.add(venueClusterList.get(i));
-                                } else if (type.equals("marcas")) {
+                                } else if (type.equals("brand")) {
                                     brandsList.add(venueClusterList.get(i));
-                                } else if (type.equals("lojas")) {
+                                } else if (type.equals("venue")) {
                                     lohasList.add(venueClusterList.get(i));
                                 }
                                 ZipzApplication.getInstance().getmSessionManager().insertVenueCluster(venueClusterList);
@@ -216,8 +236,9 @@ public class Cluster extends Fragment {
                             int size = venueClusterList.size();
                             Log.d("vc list size", "onResponse() called with: call = [" + size + "]");
                         }
-                    } else if (venueClusterResponse.getStatus().getStatusCode() == 422) {
-
+                    } else {
+                        ErrorMessage errorMessage = response.body().getStatus().getError();
+                        ZipzApplication.getInstance().getmSessionManager().saveMesssage(response.code(),errorMessage);
                     }
 
                 }
@@ -249,6 +270,18 @@ public class Cluster extends Fragment {
                     }
 
 
+                } else {
+                    if (!response.isSuccessful() && response.code() != HttpURLConnection.HTTP_OK)
+                    {
+                        Gson gson = new Gson();
+                        try {
+                            ErrorResponse errorResponse = gson.fromJson(response.errorBody().string(), ErrorResponse.class);
+                            ZipzApplication.getInstance().getmSessionManager().saveMessageErrorVenueCluster(errorResponse);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                 }
             }
 
@@ -258,7 +291,9 @@ public class Cluster extends Fragment {
             }
         });
     }
-
+    public static ErrorResponse getMessageErrorVenueCluster() {
+        return ZipzApplication.getInstance().getmSessionManager().getMessageErrorVenueCluster();
+    }
     public static List<VenueCluster> getVenueClusterList() {
         return ZipzApplication.getInstance().getmSessionManager().getVenueClusterList();
     }
