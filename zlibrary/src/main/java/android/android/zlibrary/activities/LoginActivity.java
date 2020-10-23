@@ -34,18 +34,25 @@ public class LoginActivity extends AppCompatActivity {
     public EditText etEmail, etFirstName, etLastName;
     public Button btnLogin;
 
+    String appId = "7701890734418364";
+    String appSecret = "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe";
+    String gender = "male";
+    String dateOfBirth ="1992-08-31";
+    String cpf= "11223344556";
+    String phone = "06912345685";
 
-    public static void registrationUser(String email, String firstName, String lastName) {
+    public static void registrationUser(String appId, String appSecret, String email, String firstName, String lastName, String gender,
+                                        String dateOfBirth, String cpf, String phone) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("app_id", "7701890734418364");
-        jsonObject.addProperty("app_secret", "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe");
+        jsonObject.addProperty("app_id", appId);
+        jsonObject.addProperty("app_secret", appSecret);
         jsonObject.addProperty("email", email);
         jsonObject.addProperty("first_name", firstName);
         jsonObject.addProperty("last_name", lastName);
-        jsonObject.addProperty("gender", "female");
-        jsonObject.addProperty("date_of_birth", "1992-08-31");
-        jsonObject.addProperty("cpf", "11223344556");
-        jsonObject.addProperty("phone", "06912345685");
+        jsonObject.addProperty("gender", gender);
+        jsonObject.addProperty("date_of_birth", dateOfBirth);
+        jsonObject.addProperty("cpf", cpf);
+        jsonObject.addProperty("phone", phone);
         Call<RegistrationResponse> registrationCall = RestClient.getInstance().service.
                 registration(jsonObject);
         registrationCall.enqueue(new Callback<RegistrationResponse>() {
@@ -124,7 +131,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (etEmail.getText() != null && etFirstName.getText() != null && etLastName.getText() != null) {
-                    registration(etEmail.getText().toString(), etFirstName.getText().toString(), etLastName.getText().toString());
+                    registration(appId, appSecret,etEmail.getText().toString(), etFirstName.getText().toString(), etLastName.getText().toString(),
+                            gender, dateOfBirth, cpf, phone);
                 } else {
                     Toast.makeText(LoginActivity.this, "Try again!", Toast.LENGTH_SHORT).show();
                 }
@@ -132,17 +140,18 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void registration(String email, String firstName, String lastName) {
+    public void registration(String appId, String appSecret, String email, String firstName, String lastName, String gender,
+                             String dateOfBirth, String cpf, String phone) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("app_id", "7701890734418364");
-        jsonObject.addProperty("app_secret", "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe");
+        jsonObject.addProperty("app_id", appId);
+        jsonObject.addProperty("app_secret", appSecret);
         jsonObject.addProperty("email", email);
         jsonObject.addProperty("first_name", firstName);
         jsonObject.addProperty("last_name", lastName);
-        jsonObject.addProperty("gender", "female");
-        jsonObject.addProperty("date_of_birth", "1992-08-31");
-        jsonObject.addProperty("cpf", "11223344556");
-        jsonObject.addProperty("phone", "06912345685");
+        jsonObject.addProperty("gender", gender);
+        jsonObject.addProperty("date_of_birth", dateOfBirth);
+        jsonObject.addProperty("cpf", cpf);
+        jsonObject.addProperty("phone", phone);
         Call<RegistrationResponse> registrationCall = RestClient.getInstance().service.
                 registration(jsonObject);
         registrationCall.enqueue(new Callback<RegistrationResponse>() {
@@ -180,6 +189,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     sentExceptionServer();
                     Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+
                 }
             }
 

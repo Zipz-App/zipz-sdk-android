@@ -24,7 +24,13 @@ public class MainActivity extends AppCompatActivity {
                 String email = "andjela1204@zipzapp.com";
                 String firstName = "Andjela";
                 String lastName = "Stojancevic";
-                LoginActivity.registrationUser(email, firstName, lastName);
+                String appId = "7701890734418364";
+                String appSecret = "TZdpfS4RvXxIzECimZ8BhT22LHumWfVe";
+                String gender = "male";
+                String dateOfBirth ="1992-08-31";
+                String cpf= "11223344556";
+                String phone = "06912345685";
+                LoginActivity.registrationUser(appId, appSecret,email, firstName, lastName,gender,dateOfBirth,cpf, phone);
                 Intent intent = new Intent(MainActivity.this, SplashActivity.class);
                 startActivity(intent);
             }

@@ -74,6 +74,7 @@ public class Cluster extends Fragment {
         }
 
         recyclerView = view.findViewById(R.id.rcVenuesClusters);
+
         getVenueList();
 
         venueClustersRequest();
@@ -84,7 +85,7 @@ public class Cluster extends Fragment {
 
     }
 
-    private void populateLists() {
+    private  void populateLists() {
         if (shoppingList != null && shoppingList.size() != 0) {
             ShoppingAdapter adapter = new ShoppingAdapter(shoppingList);
             recyclerView.setHasFixedSize(true);
@@ -154,11 +155,15 @@ public class Cluster extends Fragment {
             @Override
             public void onResponse(Call<VenuesResponse> call, Response<VenuesResponse> response) {
                 if (response.isSuccessful() && response.code() == HttpURLConnection.HTTP_OK) {
-                    Log.d("venue call", "onResponse() called with: call = [" + call + "], response = [" + response + "]");
+                    Log.e("venuecall", "onResponse() called with: call = [" + call + "], response = [" + response + "]");
                     VenuesResponse venuesResponse = response.body();
-                    venues = venuesResponse.getResponse().getVenues();
-                    ZipzApplication.getInstance().getmSessionManager().insertVenues(venues);
-                    getVenuesList();
+                    if(venuesResponse.getResponse().getVenues().size() != 0)
+                    {
+                        venues = venuesResponse.getResponse().getVenues();
+                        ZipzApplication.getInstance().getmSessionManager().insertVenues(venues);
+                        getVenuesList();
+                    }
+
                 }
                 else {
                     if (!response.isSuccessful() && response.code() != HttpURLConnection.HTTP_OK)
@@ -177,7 +182,7 @@ public class Cluster extends Fragment {
 
             @Override
             public void onFailure(Call<VenuesResponse> call, Throwable t) {
-                Log.d("venue call", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
+                Log.e("venuecall", "onFailure() called with: call = [" + call + "], t = [" + t + "]");
             }
         });
 
